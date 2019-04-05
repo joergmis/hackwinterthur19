@@ -1,0 +1,25 @@
+.starter-template 
+{
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+
+#issueTable 
+{
+    text-align: center;
+}
+
+#issueTable > thead
+{
+    background-color: #C0C0C0;
+}
+
+.navbar-light .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;..");
+  }
+
+.btnAdd
+{
+    margin-top: 5%;
+    background-color: #E30425;
+}

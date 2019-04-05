@@ -1,3 +1,29 @@
-<p>
-  issues works!
-</p>
+<html>
+  <main role="main" class="container">
+      <form class="form-group">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+
+        <button type="button" class="btn btn-secondary">
+          Search
+        </button>
+      </form>
+
+      <mat-toolbar>
+        <span>Open Issues</span>
+      </mat-toolbar>
+      <mat-selection-list>
+        <mat-list-item>Pumpe defekt</mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>Motor läuft nicht</mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>Filter kaputt</mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-selection-list>
+
+      <button mat-fab class="btnAdd" style="float: right"  (click)="redirectFunction('/createIssue')">
+        <mat-icon>add</mat-icon>
+      </button>
+
+
+  </main>
+</html>
