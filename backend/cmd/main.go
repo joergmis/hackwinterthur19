@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	conn, err := sqlite3.Open("./../database/database.db")
+	conn, err := sqlite3.Open("./database.db")
 	if err != nil {
 		log.Fatal(err)
 	}
