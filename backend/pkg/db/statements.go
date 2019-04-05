@@ -1,7 +1,6 @@
 // Package db provides the functions and constants to select / insert
 // values into the database
 // notes for the future:
-// LastInsertRowID() returns int64 of the last successful insert statement
 package db
 
 import (
@@ -14,19 +13,20 @@ import (
 const (
 	// create table statements
 	createUserTable     string = `create table if not exists user(id int primary key, name text, password text);`
+	createIssueTable    string = `create table if not exists issue(id int primary key, name text, description text, userid int, fileid int, documentid int, foreign key(userid) references user(id), foreign key(fileid) references file(id), foreign key(documentid) referecnes document(id));`
 	createFileTable     string = `create table if not exists file(id int primary key, location text, documentid int, foreign key(documentid) references document(id));`
 	createNoteTable     string = `create table if not exists note(id int primary key, content text, fileid int, foreign key(fileid) references file(id));`
 	createDocumentTable string = `create table if not exists document(id int primary key, name text, location text);`
-	// InsertUser stub
-	InsertUser string = `insert into user(name, password) values (?,?);`
-	// InsertFile stub
-	InsertFile string = `insert into file(location, documentid) values (?,?);`
-	// InsertNote stub
-	InsertNote string = `insert into note(content, fileid) values (?,?);`
-	// InsertDocument stub
-	InsertDocument string = `insert into document(name, location) values (?,?);`
-	// SelectUsers stub
-	SelectUsers string = `select user.name, user.password from user;`
+	// insert statements
+	insertUser     string = `insert into user(name, password) values (?,?);`
+	insertFile     string = `insert into file(location, documentid) values (?,?);`
+	insertNote     string = `insert into note(content, fileid) values (?,?);`
+	insertIssue    string = `insert into issue(id, name, description, userid, fileid, documentid) values (?,?,?,?,?,?)`
+	insertDocument string = `insert into document(name, location) values (?,?);`
+	// select statements
+	selectUsers        string = `select user.name, user.password from user;`
+	selectIssues       string = `select * from issue`
+	selectFileLocation string = `select file.location from file where file.id = ?;`
 )
 
 // CreateTables creates the tables if they don't exist
@@ -47,11 +47,31 @@ func CreateTables(conn *sqlite3.Conn) error {
 	return err
 }
 
+// InsertIssue inserts an issue
+func InsertIssue(conn *sqlite3.Conn, issue *Issue) *Issue {
+	err := conn.Exec(insertIssue, issue.ID, issue.Name, issue.Description, issue.Userid, issue.Fileid, issue.Documentid)
+	if err != nil {
+		log.Fatal(err)
+	}
+	issue.ID = int(conn.LastInsertRowID())
+	return issue
+}
+
+// InsertUser inserts a user
+func InsertUser(conn *sqlite3.Conn, user *User) *User {
+	err := conn.Exec(insertUser, user.Name, user.Password)
+	if err != nil {
+		log.Fatal(err)
+	}
+	user.ID = int(conn.LastInsertRowID())
+	return user
+}
+
 // GetUsers returns a map with all the users which
 // are in the database
 func GetUsers(conn *sqlite3.Conn) (map[string]string, error) {
 	users := make(map[string]string)
-	stmt, err := conn.Prepare(SelectUsers)
+	stmt, err := conn.Prepare(selectUsers)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -79,4 +99,40 @@ func GetUsers(conn *sqlite3.Conn) (map[string]string, error) {
 	}
 	users["user"] = "password"
 	return users, err
+}
+
+// GetAllIssues returns all issues in the database
+func GetAllIssues(conn *sqlite3.Conn) []Issue {
+	issues := []Issue{}
+	stmt, err := conn.Prepare(selectIssues)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+
+	for {
+		hasRow, err := stmt.Step()
+		if err != nil {
+			log.Fatal(err)
+		}
+		if !hasRow {
+			// The query is finished
+			break
+		}
+
+		// Use Scan to access column data from a row
+		var id int
+		var name string
+		var description string
+		var userid int
+		var fileid int
+		var documentid int
+		err = stmt.Scan(&id, &name, &description, &userid, &fileid, &documentid)
+		if err != nil {
+			log.Fatal(err)
+		}
+		issue := &Issue{ID: id, Name: name, Description: description, Userid: userid, Fileid: fileid, Documentid: documentid}
+		issues = append(issues, *issue)
+	}
+	return issues
 }
