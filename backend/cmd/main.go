@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"../pkg/db"
@@ -22,8 +21,15 @@ func main() {
 		log.Fatal(err)
 	}
 
-	router := rtr.InitRouter()
-	router.Run(":8080")
+	// get user gets either the users or adds
+	// a default user:
+	// user: user, password: password
+	users, err := db.GetUsers(conn)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	fmt.Println("hello world")
+	// create router
+	router := rtr.InitRouter(users)
+	router.Run(":8090")
 }
