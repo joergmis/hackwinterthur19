@@ -41,8 +41,8 @@ import {
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
-import { IssuesComponent } from './Pages/issues/issues.component';
-import { CreateIssueComponent } from './Pages/create-issue/create-issue.component';
+import { IssuesComponent } from './issues/issues.component';
+import { CreateIssueComponent } from './create-issue/create-issue.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -91,6 +91,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
