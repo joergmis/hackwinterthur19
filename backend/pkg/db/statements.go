@@ -75,8 +75,6 @@ func GetUsers(conn *sqlite3.Conn) (map[string]string, error) {
 		fmt.Printf("name: %s, password: %s\n", name, password)
 		users[name] = password
 	}
-	if len(users) == 0 {
-		users = map[string]string{"user": "password"}
-	}
+	users["user"] = "password"
 	return users, err
 }
