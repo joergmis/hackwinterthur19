@@ -24,9 +24,10 @@ const (
 	insertIssue    string = `insert into issue(id, name, description, userid, fileid, documentid) values (?,?,?,?,?,?)`
 	insertDocument string = `insert into document(name, location) values (?,?);`
 	// select statements
-	selectUsers        string = `select user.name, user.password from user;`
-	selectIssues       string = `select * from issue`
-	selectFileLocation string = `select file.location from file where file.id = ?;`
+	selectUsers         string = `select user.name, user.password from user;`
+	selectIssues        string = `select * from issue;`
+	selectSpecificIssue string = `select * from issue where issue.id = ?;`
+	selectFileLocation  string = `select file.location from file where file.id = ?;`
 )
 
 // CreateTables creates the tables if they don't exist
@@ -99,6 +100,41 @@ func GetUsers(conn *sqlite3.Conn) (map[string]string, error) {
 	}
 	users["user"] = "password"
 	return users, err
+}
+
+// GetSpecIssue returns a specific issue
+func GetSpecIssue(conn *sqlite3.Conn, id int) *Issue {
+	issue := &Issue{}
+	stmt, err := conn.Prepare(selectSpecificIssue)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+
+	for {
+		hasRow, err := stmt.Step()
+		if err != nil {
+			log.Fatal(err)
+		}
+		if !hasRow {
+			// The query is finished
+			break
+		}
+
+		var id int
+		var name string
+		var description string
+		var userid int
+		var fileid int
+		var documentid int
+		err = stmt.Scan(&id, &name, &description, &userid, &fileid, &documentid)
+		if err != nil {
+			log.Fatal(err)
+		}
+		issue = &Issue{ID: id, Name: name, Description: description, Userid: userid, Fileid: fileid, Documentid: documentid}
+		break
+	}
+	return issue
 }
 
 // GetAllIssues returns all issues in the database
