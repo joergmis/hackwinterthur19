@@ -17,14 +17,16 @@ const (
 	createFileTable     string = `create table if not exists file(id int primary key, location text, documentid int, foreign key(documentid) references document(id));`
 	createNoteTable     string = `create table if not exists note(id int primary key, content text, fileid int, foreign key(fileid) references file(id));`
 	createDocumentTable string = `create table if not exists document(id int primary key, name text, location text);`
-	// insert statements
-	insertUser     string = `insert into user(name, password) values (?,?);`
-	insertFile     string = `insert into file(location, documentid) values (?,?);`
-	insertNote     string = `insert into note(content, fileid) values (?,?);`
-	insertDocument string = `insert into document(name, location) values (?,?);`
-	// select statements
-	selectUsers        string = `select user.name, user.password from user;`
-	selectFileLocation string = `select file.location from file where file.id = ?;`
+	// InsertUser stub
+	InsertUser string = `insert into user(name, password) values (?,?);`
+	// InsertFile stub
+	InsertFile string = `insert into file(location, documentid) values (?,?);`
+	// InsertNote stub
+	InsertNote string = `insert into note(content, fileid) values (?,?);`
+	// InsertDocument stub
+	InsertDocument string = `insert into document(name, location) values (?,?);`
+	// SelectUsers stub
+	SelectUsers string = `select user.name, user.password from user;`
 )
 
 // CreateTables creates the tables if they don't exist
@@ -49,7 +51,7 @@ func CreateTables(conn *sqlite3.Conn) error {
 // are in the database
 func GetUsers(conn *sqlite3.Conn) (map[string]string, error) {
 	users := make(map[string]string)
-	stmt, err := conn.Prepare(selectUsers)
+	stmt, err := conn.Prepare(SelectUsers)
 	if err != nil {
 		log.Fatal(err)
 	}

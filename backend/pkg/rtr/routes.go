@@ -7,14 +7,9 @@ import (
 	"os"
 	"path"
 
+	"../db"
 	"github.com/gin-gonic/gin"
 )
-
-type user struct {
-	ID       string `json:"id"`
-	Name     string `json:"name"`
-	Password string `json:"password"`
-}
 
 // InitRouter initialises the routes
 func InitRouter(users map[string]string) *gin.Engine {
@@ -30,12 +25,38 @@ func InitRouter(users map[string]string) *gin.Engine {
 
 	// create user (unauthorized!)
 	router.POST("/users", func(c *gin.Context) {
-		user := &user{}
+		user := &db.User{}
 		c.Bind(&user)
-		log.Print(user)
+		log.Printf("user '%s' registered with password '%s'", user.Name, user.Password)
+		// TODO: insert user into database
 		c.JSON(200, gin.H{
 			"success": "true",
 		})
+	})
+
+	// get all issues from the database
+	authorized.GET("/issues", func(c *gin.Context) {
+		// TODO:
+		c.JSON(200, gin.H{"hello": "world", "bye": "world"})
+	})
+
+	// create an issue
+	authorized.POST("/issues", func(c *gin.Context) {
+		// TODO:
+
+		c.JSON(200, gin.H{"hello": "world", "bye": "world"})
+	})
+
+	// get a specifig issue
+	authorized.GET("/issues/id", func(c *gin.Context) {
+		// TODO:
+		c.JSON(200, gin.H{"hello": "world", "bye": "world"})
+	})
+
+	// delete a specific issue
+	authorized.DELETE("/issues/id", func(c *gin.Context) {
+		// TODO:
+		c.JSON(200, gin.H{"hello": "world", "bye": "world"})
 	})
 
 	// file upload
