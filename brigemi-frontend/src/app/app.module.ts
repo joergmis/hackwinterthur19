@@ -1,10 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { IssuesComponent } from './Pages/issues/issues.component';
-import { CreateIssueComponent } from './Pages/create-issue/create-issue.component';
+import { IssuesComponent } from './issues/issues.component';
+import { CreateIssueComponent } from './create-issue/create-issue.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { CreateIssueComponent } from './Pages/create-issue/create-issue.componen
   ],
   imports: [
     BrowserModule,
-    NgbModule
+    NgbModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
