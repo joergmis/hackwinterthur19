@@ -1,0 +1,15 @@
+.btnAddAnswer {
+    margin-top: 10px;
+    background-color: #01009A;
+    float: right;
+    width: 40%;
+    color: white;
+    box-shadow: 3px 3px 3px rgb(53, 53, 53);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+}
+
+.btnAddAnswer:hover {
+    background-color: rgb(181, 241, 181);
+    color: black;
+  }

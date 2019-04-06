@@ -46,12 +46,14 @@ import {
 import { AppComponent } from './app.component';
 import { IssuesComponent } from './Pages/issues/issues.component';
 import { CreateIssueComponent } from './Pages/create-issue/create-issue.component';
+import { ShowIssueComponent } from './Pages/show-issue/show-issue.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     IssuesComponent,
-    CreateIssueComponent
+    CreateIssueComponent,
+    ShowIssueComponent
   ],
   imports: [
     BrowserModule,
