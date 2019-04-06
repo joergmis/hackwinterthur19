@@ -27,10 +27,10 @@
 </mat-toolbar>
 <mat-nav-list>
   <mat-list-item (click)="redirectFunction('/showIssue', issue.id)" *ngFor="let issue of issues | async">
-    {{issue.name}}
+    {{issue.Name}}
   </mat-list-item>
 </mat-nav-list>
 
-<button mat-fab class="btnAdd" style="float: right" (click)="redirectFunction('/createIssue')">
+<button mat-fab class="btnAdd" style="float: right" (click)="redirectFunction('/createIssues')">
   <mat-icon>add</mat-icon>
 </button>

@@ -1,18 +1,31 @@
 export class Issue {
-    constructor(
-        public id: number, 
-        public name: string,
-        public description: string,
-        public userid: number,
-        public fileid?: number,
-        public documentid?: number
-        ) { }
+    public Id: number;
+    public Name: string;
+    public Description: string;
+    Userid: number;
+    Fileid?: number;
+    Documentid?: number;
     
-    setIssueID(id: number) {
-        this.id = id;
+    constructor(
+        Id: number, 
+        Name: string,
+        Description: string,
+        Userid: number,
+        Fileid?: number,
+        Documentid?: number
+        ) { 
+            this.Name = Name;
+            this.Description = Description;
+            this.Userid = Userid;
+            this.Fileid = Fileid;
+            this.Documentid = Documentid;
+        }
+    
+    setIssueID(Userid: number) {
+        this.Userid = Userid;
     }
     
     public getId(): number {
-        return this.id;
+        return this.Userid;
     };     
 }

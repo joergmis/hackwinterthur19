@@ -1,26 +1,26 @@
 export class User {
-    private id;
-    private name;
-    private password;
+    private Id;
+    private Name;
+    private Password;
     
-    constructor(name: string, password: string) {
-        this.name = name;
-        this.password = password;
+    constructor(Name: string, Password: string) {
+        this.Name = Name;
+        this.Password = Password;
     }
     
     public static fromJSON = (json: string): User => {
         const jsonObject = JSON.parse(json);
         return new User(
-            jsonObject.name,
-            jsonObject.password
+            jsonObject.Name,
+            jsonObject.Password
         );
     };
     
-    public setUserID(id: number) {
-        this.id = id;
+    public setUserID(Id: number) {
+        this.Id = Id;
     }
     
     public getId(): string {
-        return this.id;
+        return this.Id;
     };     
 }
