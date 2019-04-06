@@ -171,5 +171,8 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 		c.JSON(200, structs.Map(note))
 	})
 
+	// file server
+	router.Static("./tmp", "./tmp")
+
 	return router
 }
