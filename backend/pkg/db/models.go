@@ -20,7 +20,8 @@ type Issue struct {
 // Document representation
 type Document struct {
 	ID       int    `json:"id"`
-	Content  string `json:"content"`
+	Name     string `json:"name"`
+	Text     string `json:"text"`
 	Fileid   int    `json:"fileid"`
 	Location string `json:"location"`
 }

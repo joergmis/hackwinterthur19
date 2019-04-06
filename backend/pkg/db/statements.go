@@ -16,13 +16,13 @@ const (
 	createIssueTable    string = `create table if not exists issue(id int primary key, name text, description text, userid int, fileid int, documentid int, foreign key(userid) references user(id) on delete cascade, foreign key(fileid) references file(id) on delete cascade, foreign key(documentid) references document(id) on delete cascade);`
 	createFileTable     string = `create table if not exists file(id int primary key, location text, documentid int, foreign key(documentid) references document(id) on delete cascade);`
 	createNoteTable     string = `create table if not exists note(id int primary key, content text, fileid int, foreign key(fileid) references file(id) on delete cascade);`
-	createDocumentTable string = `create table if not exists document(id int primary key, name text, location text);`
+	createDocumentTable string = `create table if not exists document(id int primary key, name text, text text, location text, fileid int, foreign key(fileid) references file(id) on delete cascade);`
 	// insert statements
 	insertUser     string = `insert into user(name, password) values (?,?);`
 	insertFile     string = `insert into file(location, documentid) values (?,?);`
 	insertNote     string = `insert into note(content, fileid) values (?,?);`
 	insertIssue    string = `insert into issue(id, name, description, userid, fileid, documentid) values (?,?,?,?,?,?)`
-	insertDocument string = `insert into document(name, location) values (?,?);`
+	insertDocument string = `insert into document(name, text, location, fileid) values (?,?,?,?);`
 	// select statements
 	selectUsers         string = `select user.name, user.password from user;`
 	selectIssues        string = `select * from issue;`
@@ -81,6 +81,36 @@ func DeleteSpecIssue(conn *sqlite3.Conn, id string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+// InsertDocument creates a new document
+func InsertDocument(conn *sqlite3.Conn, document *Document) *Document {
+	err := conn.Exec(insertDocument, document.Name, document.Text, document.Location, document.Fileid)
+	if err != nil {
+		log.Fatal(err)
+	}
+	document.ID = int(conn.LastInsertRowID())
+	return document
+}
+
+// InsertFile creates a new file
+func InsertFile(conn *sqlite3.Conn, file *File) *File {
+	err := conn.Exec(insertFile, file.Location, file.Documentid)
+	if err != nil {
+		log.Fatal(err)
+	}
+	file.ID = int(conn.LastInsertRowID())
+	return file
+}
+
+// InsertNote creates a new note
+func InsertNote(conn *sqlite3.Conn, note *Note) *Note {
+	err := conn.Exec(insertNote, note.Content, note.Fileid)
+	if err != nil {
+		log.Fatal(err)
+	}
+	note.ID = int(conn.LastInsertRowID())
+	return note
 }
 
 // GetUsers returns a map with all the users which

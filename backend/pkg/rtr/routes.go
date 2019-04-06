@@ -60,7 +60,7 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 	// delete a specific issue
 	authorized.DELETE("/issues/:id", func(c *gin.Context) {
 		db.DeleteSpecIssue(conn, c.Param("id"))
-		c.JSON(200, gin.H{"hello": "world", "bye": "world"})
+		c.JSON(200, gin.H{"delete": "success"})
 	})
 
 	// file upload
@@ -77,6 +77,30 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 		if err != nil {
 			log.Fatal(err)
 		}
+	})
+
+	// create a document
+	authorized.POST("/documents", func(c *gin.Context) {
+		document := &db.Document{}
+		c.Bind(&document)
+		document = db.InsertDocument(conn, document)
+		c.JSON(200, structs.Map(document))
+	})
+
+	// create a file
+	authorized.POST("/files", func(c *gin.Context) {
+		file := &db.File{}
+		c.Bind(&file)
+		file = db.InsertFile(conn, file)
+		c.JSON(200, structs.Map(file))
+	})
+
+	// create a note
+	authorized.POST("/notes", func(c *gin.Context) {
+		note := &db.Note{}
+		c.Bind(&note)
+		note = db.InsertNote(conn, note)
+		c.JSON(200, structs.Map(note))
 	})
 
 	return router
