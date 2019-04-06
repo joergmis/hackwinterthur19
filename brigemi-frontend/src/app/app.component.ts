@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'brigemi-frontend';
+
+  public currentPath : Location;
+
+  constructor() {
+    this.currentPath = window.location;
+    console.log(this.currentPath.pathname);
+  }
 }
