@@ -1,6 +1,8 @@
 // Source: https://x-team.com/blog/webcam-image-capture-angular/
 
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { RestService } from 'src/app/Services/rest-service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-create-issue',
@@ -15,10 +17,10 @@ export class CreateIssueComponent implements OnInit {
   @ViewChild("canvas")
   public canvas: ElementRef
 
-  public captures: Array<any>;
+  private restService;
 
-  public constructor() {
-      this.captures = [];
+  public constructor(httpClient: HttpClient) { 
+    this.restService = new RestService(httpClient);
   }
 
   ngOnInit() {
@@ -35,6 +37,10 @@ export class CreateIssueComponent implements OnInit {
 
   public capture() {
     var context = this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, 640, 480);
-    this.captures.push(this.canvas.nativeElement.toDataURL("image/png"));
+    // this.captures.push(this.canvas.nativeElement.toDataURL("image/png"));
+  }
+
+  public createIssue() {
+    // todo
   }
 }
