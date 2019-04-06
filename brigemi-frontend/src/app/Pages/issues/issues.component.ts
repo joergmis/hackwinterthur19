@@ -5,13 +5,15 @@ import { Observable, of } from 'rxjs';
 
 import {RestService} from "../../Services/rest-service";
 
+import { Issue } from '../../Objects/issue';
+
 @Component({
   selector: 'app-issues',
   templateUrl: './issues.component.html',
   styleUrls: ['./issues.component.css']
 })
 export class IssuesComponent implements OnInit {
-  public issues = [];
+  public issues;
   public documents = null;
 
   private restService;
