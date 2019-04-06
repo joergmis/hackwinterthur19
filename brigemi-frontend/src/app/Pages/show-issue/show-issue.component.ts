@@ -21,10 +21,10 @@ export class ShowIssueComponent implements OnInit {
     this.restService = new RestService(this.http);
 
     ar.queryParams.subscribe(params => {
-      this.issue.id = params['id'];
+      this.issue.Id = params['id'];
     })
 
-    this.restService.get(this.issue.id, "issues/").subscribe(
+    this.restService.get(this.issue.Id, "issues/").subscribe(
       data => { this.issue = data; },
       err => { console.log(err); }
     );
