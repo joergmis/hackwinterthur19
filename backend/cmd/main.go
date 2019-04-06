@@ -30,6 +30,6 @@ func main() {
 	}
 
 	// create router
-	router := rtr.InitRouter(users)
+	router := rtr.InitRouter(users, conn)
 	router.Run(":8090")
 }
