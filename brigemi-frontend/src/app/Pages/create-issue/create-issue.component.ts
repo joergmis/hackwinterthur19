@@ -4,6 +4,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { RestService } from 'src/app/Services/rest-service';
 import { HttpClient } from '@angular/common/http';
 
+import { Issue } from "src/app/Objects/issue";
+
 @Component({
   selector: 'app-create-issue',
   templateUrl: './create-issue.component.html',
