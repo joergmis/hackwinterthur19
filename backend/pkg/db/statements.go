@@ -39,6 +39,11 @@ const (
 									inner join documenttag on document.id = documenttag.documentid
 									inner join tag on documenttag.tagid = tag.id
 									where tag.name = ?;`
+	selectIssuesWithTags string = `select *
+									from issue
+									inner join issuetag on issue.id = issuetag.issueid
+									inner join tag on issuetag.tagid = tag.id
+									where tag.name = ?`
 	// delete statements
 	deleteIssue string = `delete from issue where issue.id = ?;`
 )
@@ -89,6 +94,35 @@ func SearchForDocuments(conn *sqlite3.Conn, tag string) []*Document {
 		documents = append(documents, doc)
 	}
 	return documents
+}
+
+// SearchForIssues searches for Documents which are assigned to the tags
+func SearchForIssues(conn *sqlite3.Conn, tag string) []*Issue {
+	issues := []*Issue{}
+	stmt, err := conn.Prepare(selectIssuesWithTags, tag)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+
+	for {
+		hasRow, err := stmt.Step()
+		if err != nil {
+			log.Fatal(err)
+		}
+		if !hasRow {
+			break
+		}
+
+		issue := &Issue{}
+		err = stmt.Scan(&issue.ID, &issue.Name, &issue.Description, &issue.Userid, &issue.Fileid, &issue.Documentid)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		issues = append(issues, issue)
+	}
+	return issues
 }
 
 // CreateDocumentTag creates an issue
