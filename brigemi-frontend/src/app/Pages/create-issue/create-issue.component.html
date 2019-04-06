@@ -1,3 +1,14 @@
+<!-- Source: https://x-team.com/blog/webcam-image-capture-angular/ -->
 <p>
   create-issue works!
 </p>
+<p>nice</p>
+
+<div><video #video id="video" width="640" height="480" autoplay></video></div>
+<div><button id="snap" (click)="capture()">Snap Photo</button></div>
+<canvas #canvas id="canvas" width="640" height="480"></canvas>
+<ul>
+    <li *ngFor="let c of captures">
+        <img src="{{ c }}" height="50" />
+    </li>
+</ul>
