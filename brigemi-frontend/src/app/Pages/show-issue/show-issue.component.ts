@@ -16,16 +16,19 @@ export class ShowIssueComponent implements OnInit {
   private restService;
 
   constructor(private http: HttpClient, private router : Router, private ar : ActivatedRoute) {
+    var main = this;
 
     this.issue = new Issue(0,'','',0,0,0);
     this.restService = new RestService(this.http);
 
     ar.queryParams.subscribe(params => {
-      this.issue.id = params['id'];
+      this.issue.setIssueID(params['id']);
     })
 
-    this.restService.get(this.issue.id, "issues/").subscribe(
-      data => { this.issue = data; },
+    console.log(this.issue.getId());
+
+    this.restService.get(this.issue.getId(), "issues/").subscribe(
+      data => { main.issue = data; },
       err => { console.log(err); }
     );
 

@@ -26,7 +26,7 @@
   <span>Open Issues</span>
 </mat-toolbar>
 <mat-nav-list>
-  <mat-list-item (click)="redirectFunction('/showIssue', issue.id)" *ngFor="let issue of issues | async">
+  <mat-list-item (click)="redirectFunction('/showIssue', issue.ID)" *ngFor="let issue of issues | async">
     {{issue.Name}}
   </mat-list-item>
 </mat-nav-list>

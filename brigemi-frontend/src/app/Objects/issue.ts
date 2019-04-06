@@ -1,13 +1,13 @@
 export class Issue {
-    public Id: number;
-    public Name: string;
-    public Description: string;
-    Userid: number;
-    Fileid?: number;
-    Documentid?: number;
+    private ID: number;
+    private Name: string;
+    private Description: string;
+    private Userid: number;
+    private Fileid?: number;
+    private Documentid?: number;
     
     constructor(
-        Id: number, 
+        ID: number, 
         Name: string,
         Description: string,
         Userid: number,
@@ -21,11 +21,11 @@ export class Issue {
             this.Documentid = Documentid;
         }
     
-    setIssueID(Userid: number) {
-        this.Userid = Userid;
+    setIssueID(ID: number) {
+        this.ID = ID;
     }
     
     public getId(): number {
-        return this.Userid;
+        return this.ID;
     };     
 }
