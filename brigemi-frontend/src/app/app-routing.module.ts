@@ -5,7 +5,8 @@ import { CreateIssueComponent } from './Pages/create-issue/create-issue.componen
 
 const routes: Routes = [
   { path: '', component: IssuesComponent },
-  { path: 'createIssues', component: CreateIssueComponent }
+  { path: 'createIssues', component: CreateIssueComponent },
+  { path: 'showIssue', component: CreateIssueComponent }
 ];
 
 @NgModule({
