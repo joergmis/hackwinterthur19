@@ -6,5 +6,13 @@ export class Issue {
         public userid: number,
         public fileid?: number,
         public documentid?: number
-        ) { }  
+        ) { };  
+    
+    setIssueID(id: number) {
+        this.id = id;
+    }
+    
+    public getId(): number {
+        return this.id;
+    };     
 }

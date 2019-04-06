@@ -1,4 +1,3 @@
-
 <div class="col-lg-3" id="loginpage">
   <p style="color:red;"></p>
   <p style="color:green;"></p>
@@ -13,6 +12,6 @@
   </form>
 
   <form method="POST" action="${pageContext.request.contextPath}/JSP/registration.jsp">
-    <button type="submit" name="btnRegistrieren" id="btnRegistrieren" class="btn btn-lg btn-default btn-block" onclick="">Registrieren</button>
+    <button type="submit" name="btnRegistrieren" id="btnRegistrieren" class="btn btn-lg btn-default btn-block" (click)="redirectFunction('/register')">Registrieren</button>
   </form>
 </div>

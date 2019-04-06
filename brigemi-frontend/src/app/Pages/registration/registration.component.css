@@ -1,0 +1,59 @@
+#loginpage {
+    background-color:rgb(221, 221, 221);
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    max-width: 500px;
+}
+
+.form-horizontal 
+{
+    margin: auto;
+    width: 100%;
+    padding: 10px;
+
+}
+
+.form-horizontal div
+{
+    padding: 5px;
+}
+
+.form-horizontal label
+{
+    font-weight: bold;
+}
+
+#header
+{
+    border-bottom: solid;
+    border-width: 1px;
+    border-color: rgb(221, 221, 221);
+    max-width: 500px;
+    width: 100%;
+}
+
+#btnAbbrechen
+{
+    width: 80%;
+    margin-right: 20%;
+}
+
+#btnSpeichern
+{
+    background-color: #01009A;
+    color: white;
+    width: 80%;
+    margin-left: 20%;
+}
+
+#btnAbbrechen:hover {
+    background-color: rgb(228, 143, 143);
+    color: black;
+}
+
+#btnSpeichern:hover {
+    background-color: rgb(181, 222, 241);
+    color: black;
+  }

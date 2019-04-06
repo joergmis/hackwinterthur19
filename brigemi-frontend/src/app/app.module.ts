@@ -4,6 +4,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
+import { NgForm } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatAutocompleteModule,
@@ -48,7 +50,7 @@ import { IssuesComponent } from './Pages/issues/issues.component';
 import { CreateIssueComponent } from './Pages/create-issue/create-issue.component';
 import { ShowIssueComponent } from './Pages/show-issue/show-issue.component';
 import { LoginComponent } from './Pages/login/login.component';
-import { FormsModule } from "@angular/forms";
+import { RegistrationComponent } from './Pages/registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,8 @@ import { FormsModule } from "@angular/forms";
     IssuesComponent,
     CreateIssueComponent,
     ShowIssueComponent,
-    LoginComponent
+    LoginComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
@@ -100,7 +103,8 @@ import { FormsModule } from "@angular/forms";
     MatTreeModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
