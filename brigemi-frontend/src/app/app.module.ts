@@ -46,6 +46,7 @@ import {
 import { AppComponent } from './app.component';
 import { IssuesComponent } from './Pages/issues/issues.component';
 import { CreateIssueComponent } from './Pages/create-issue/create-issue.component';
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -94,7 +95,8 @@ import { CreateIssueComponent } from './Pages/create-issue/create-issue.componen
     MatTooltipModule,
     MatTreeModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
