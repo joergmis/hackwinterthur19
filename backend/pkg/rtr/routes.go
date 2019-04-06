@@ -27,7 +27,7 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 		Credentials:     true,
 		ValidateHeaders: false,
 	}))
-	authorized := router.Group("/", gin.BasicAuth(users))
+	// authorized := router.Group("/", gin.BasicAuth(users))
 
 	// dummy route
 	router.GET("/ping", func(c *gin.Context) {
@@ -47,14 +47,14 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 	})
 
 	// get all issues from the database
-	authorized.GET("/issues", func(c *gin.Context) {
+	router.GET("/issues", func(c *gin.Context) {
 		issues := db.GetAllIssues(conn)
 		log.Print(issues)
 		c.JSON(200, structs.Map(issues))
 	})
 
 	// create an issue
-	authorized.POST("/issues", func(c *gin.Context) {
+	router.POST("/issues", func(c *gin.Context) {
 		issue := &db.Issue{}
 		c.Bind(&issue)
 		issue = db.InsertIssue(conn, issue)
@@ -62,19 +62,19 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 	})
 
 	// get a specifig issue
-	authorized.GET("/issues/:id", func(c *gin.Context) {
+	router.GET("/issues/:id", func(c *gin.Context) {
 		issue := db.GetSpecIssue(conn, c.Param("id"))
 		c.JSON(200, structs.Map(issue))
 	})
 
 	// delete a specific issue
-	authorized.DELETE("/issues/:id", func(c *gin.Context) {
+	router.DELETE("/issues/:id", func(c *gin.Context) {
 		db.DeleteSpecIssue(conn, c.Param("id"))
 		c.JSON(200, gin.H{"delete": "success"})
 	})
 
 	// file upload
-	authorized.POST("/fileupload", func(c *gin.Context) {
+	router.POST("/fileupload", func(c *gin.Context) {
 		file, header, err := c.Request.FormFile("upload")
 		filename := header.Filename
 		fmt.Println(header.Filename)
@@ -90,7 +90,7 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 	})
 
 	// create a document
-	authorized.POST("/documents", func(c *gin.Context) {
+	router.POST("/documents", func(c *gin.Context) {
 		document := &db.Document{}
 		c.Bind(&document)
 		document = db.InsertDocument(conn, document)
@@ -98,7 +98,7 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 	})
 
 	// create a file
-	authorized.POST("/files", func(c *gin.Context) {
+	router.POST("/files", func(c *gin.Context) {
 		file := &db.File{}
 		c.Bind(&file)
 		file = db.InsertFile(conn, file)
@@ -106,7 +106,7 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 	})
 
 	// create a note
-	authorized.POST("/notes", func(c *gin.Context) {
+	router.POST("/notes", func(c *gin.Context) {
 		note := &db.Note{}
 		c.Bind(&note)
 		note = db.InsertNote(conn, note)
