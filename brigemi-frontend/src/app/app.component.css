@@ -21,9 +21,9 @@
     font-weight: bold;
 }
 
-.navbar-default .navbar-nav li {
+.navbar-default ul {
     background-color: #11387D;
-    display: block;
+    display: inline;
 }
 
 .navbar-nav > li > a.navbar-custom
@@ -37,6 +37,10 @@
     color: white;
     font-weight: normal;
     font-size: 30px;
+}
+
+#btnLogout {
+    color: white;
 }
 
 #navbarsExampleDefault 

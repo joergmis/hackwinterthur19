@@ -31,6 +31,7 @@ export class RegistrationComponent implements OnInit {
       main.user = new User(form.value.txtUsername, form.value.pwPassword);
       this.restService.post(main.user, "users").subscribe(
         data => {
+          console.log(data);
           main.user.setUserID(data.id);
           this.router.navigate(['login']);
         },
