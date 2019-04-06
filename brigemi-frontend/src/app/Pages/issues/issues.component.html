@@ -1,7 +1,8 @@
-<form class="form-group">
-  <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+<form class="form-group" #form="ngForm" (ngSubmit)="searchcall()">
+  <input class="form-control mr-sm-2" type="text" placeholder="Search" 
+  aria-label="Search" [(ngModel)]="model.name" #name="ngModel" name="name">
 
-  <button type="button" class="btn btn-secondary">
+  <button type="button" class="btn btn-secondary" type="submit">
     Search
   </button>
 </form>
@@ -15,6 +16,6 @@
   </mat-list-item>
 </mat-nav-list>
 
-<button mat-fab class="btnAdd" style="float: right"  (click)="redirectFunction('/createIssue')">
+<button mat-fab class="btnAdd" style="float: right" (click)="redirectFunction('/createIssue')">
   <mat-icon>add</mat-icon>
 </button>
