@@ -8,12 +8,22 @@
   <div class="form-group">
     <textarea class="form-control" id="description" placeholder="Description" rows="3" [(ngModel)]="model.description" name="description" required></textarea>
   </div>
+
+  <div class="form-group" style="object-fit: fill">
+    <video #video id="video" width="100%" [hidden]="!isCameraShown || isPhotoTaken" autoplay></video> 
+  </div>
+  <div class="form-group" style="object-fit: fill">
+    <img #image />
+    <canvas #canvas id="canvas" hidden></canvas>
+  </div>
+
+  <button mat-fab type="button" [hidden]="isCameraShown" (click)="isCameraShown = true">
+    <mat-icon>camera_alt</mat-icon>
+  </button>
+  <button mat-fab type="button" [hidden]="!isCameraShown" (click)="capture(); isPhotoTaken = true">
+    <mat-icon>camera_alt</mat-icon>
+  </button>
   <button mat-fab class="btnAdd" style="float: right" type="submit">
     <mat-icon>add</mat-icon>
   </button>
 </form>
-
-
-<div><video #video id="video" width="640" height="480" autoplay></video></div>
-<div><button id="snap" (click)="capture()">Snap Photo</button></div>
-<canvas #canvas id="canvas" width="640" height="480"></canvas>

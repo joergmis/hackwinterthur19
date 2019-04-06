@@ -19,6 +19,13 @@ export class CreateIssueComponent implements OnInit {
   @ViewChild("canvas")
   public canvas: ElementRef
 
+  @ViewChild("image")
+  public image: ElementRef
+
+  isCameraShown = false;
+
+  isPhotoTaken = false;
+
   // An issue id of 0 indicates a new issue to be created
   model = new Issue(0, "", "", 1);
 
@@ -34,15 +41,19 @@ export class CreateIssueComponent implements OnInit {
   ngAfterViewInit() {
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-            this.video.nativeElement.srcObject = stream; // .src = window.URL.createObjectURL(stream);
+            this.video.nativeElement.srcObject = stream;
             this.video.nativeElement.play();
         });
     }
   }
 
   capture() {
-    var context = this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, 640, 480);
-    // this.captures.push(this.canvas.nativeElement.toDataURL("image/png"));
+    let width = this.video.nativeElement.offsetWidth;
+    let height = this.video.nativeElement.offsetHeight;
+    this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, width, height);
+    this.image.nativeElement.src = this.canvas.nativeElement.toDataURL("image/png", 1);
+    this.image.nativeElement.width = width;
+    this.image.nativeElement.height = height;
   }
 
   createIssue() {
