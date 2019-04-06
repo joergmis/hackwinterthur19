@@ -11,14 +11,12 @@
       <mat-toolbar>
         <span>Open Issues</span>
       </mat-toolbar>
-      <mat-selection-list>
-        <mat-list-item>Pumpe defekt</mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item>Motor läuft nicht</mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item>Filter kaputt</mat-list-item>
-        <mat-divider></mat-divider>
-      </mat-selection-list>
+      <mat-list>
+          <div *ngFor="let issue of issues | async">
+          <mat-list-item >{{issue.name}}</mat-list-item>
+          <mat-divider></mat-divider>
+          </div>
+      </mat-list>
 
       <button mat-fab class="btnAdd" style="float: right"  (click)="redirectFunction('/createIssue')">
         <mat-icon>add</mat-icon>

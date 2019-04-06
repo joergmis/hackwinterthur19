@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import {HttpClientModule} from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
 import {
   MatAutocompleteModule,
   MatBadgeModule,
@@ -41,8 +43,8 @@ import {
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
-import { IssuesComponent } from './issues/issues.component';
-import { CreateIssueComponent } from './create-issue/create-issue.component';
+import { IssuesComponent } from './Pages/issues/issues.component';
+import { CreateIssueComponent } from './Pages/create-issue/create-issue.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -90,8 +92,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatTreeModule
-    AppRoutingModule
+    MatTreeModule,
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
