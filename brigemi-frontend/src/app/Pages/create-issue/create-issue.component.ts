@@ -2,7 +2,7 @@
 
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { RestService } from 'src/app/Services/rest-service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Issue } from "src/app/Objects/issue";
 
@@ -19,13 +19,25 @@ export class CreateIssueComponent implements OnInit {
   @ViewChild("canvas")
   public canvas: ElementRef
 
+  @ViewChild("image")
+  public image: ElementRef
+
+  @ViewChild("file")
+  public file: ElementRef
+
+  isCameraShown = false;
+
+  isPhotoTaken = false;
+
   // An issue id of 0 indicates a new issue to be created
   model = new Issue(0, "", "", 1);
 
+  private httpClient;
   private restService;
-  public captures: Array<any>;
+  private imageToUpload;
 
   constructor(httpClient: HttpClient) { 
+    this.httpClient = httpClient;
     this.restService = new RestService(httpClient);
   }
 
@@ -36,23 +48,41 @@ export class CreateIssueComponent implements OnInit {
   ngAfterViewInit() {
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-            this.video.nativeElement.srcObject = stream; // .src = window.URL.createObjectURL(stream);
+            this.video.nativeElement.srcObject = stream;
             this.video.nativeElement.play();
         });
     }
   }
 
   capture() {
-    var context = this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, 640, 480);
-    this.captures.push(this.canvas.nativeElement.toDataURL("image/png"));
+    let width = this.video.nativeElement.offsetWidth;
+    let height = this.video.nativeElement.offsetHeight;
+
+    this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, width, height);
+    this.imageToUpload = this.canvas.nativeElement.toDataURL("image/png");
+    this.file.nativeElement = this.imageToUpload;
+
+    this.image.nativeElement.src = this.imageToUpload;
+    this.image.nativeElement.width = width;
+    this.image.nativeElement.height = height;
   }
 
   createIssue() {
+    this.uploadImage();
     this.restService.post(this.model, "issues").subscribe(
       data => {
         console.log("POST done");
       },
       err => console.error("Erroro: " + err)
+    );
+  }
+
+  uploadImage() {
+    let formData = new FormData();
+    let headers = new HttpHeaders({ "processData": "false", "contentType": "false", "dataType": "json" });
+    this.httpClient.post("http://localhost:8090/fileupload", formData, headers).subscribe(
+      data => { console.log("done") },
+      err => console.error(err)
     );
   }
 }
