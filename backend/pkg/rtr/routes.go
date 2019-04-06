@@ -37,6 +37,18 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 		c.JSON(200, structs.Map(tag))
 	})
 
+	// search route
+	router.POST("/search", func(c *gin.Context) {
+		params := c.Request.URL.Query()
+		var docs []*db.Document
+		for _, p := range params {
+			for _, m := range p {
+				docs = db.SearchForDocuments(conn, m)
+			}
+		}
+		c.JSON(200, docs)
+	})
+
 	// create issue tag
 	router.POST("/issuetags", func(c *gin.Context) {
 		issueTag := &db.IssueTag{}

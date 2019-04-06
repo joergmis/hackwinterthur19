@@ -9,6 +9,9 @@ import (
 )
 
 func main() {
+
+	testMode := true
+
 	conn, err := sqlite3.Open("./database.db")
 	if err != nil {
 		log.Fatal(err)
@@ -19,6 +22,10 @@ func main() {
 	err = db.CreateTables(conn)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	if testMode {
+		db.InsertTestData(conn)
 	}
 
 	// get user gets either the users or adds
