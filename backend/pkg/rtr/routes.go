@@ -41,9 +41,15 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 	router.POST("/search", func(c *gin.Context) {
 		params := c.Request.URL.Query()
 		var docs []*db.Document
+		if len(params) == 0 {
+			c.JSON(512, "no params")
+			return
+		}
 		for _, p := range params {
 			for _, m := range p {
 				docs = db.SearchForDocuments(conn, m)
+				c.JSON(200, docs)
+				return
 			}
 		}
 		c.JSON(200, docs)
@@ -73,6 +79,21 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 		user = db.InsertUser(conn, user)
 		log.Printf("user got id '%d'", user.ID)
 		c.JSON(200, structs.Map(user))
+	})
+
+	// check if user has correct password
+	router.POST("/users/authenticate", func(c *gin.Context) {
+		user := &db.User{}
+		c.Bind(&user)
+		users, err := db.GetUsers(conn)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if users[user.Name] == user.Password {
+			c.JSON(200, structs.Map(user))
+			return
+		}
+		c.JSON(200, "login not successful")
 	})
 
 	// get all issues from the database
