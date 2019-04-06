@@ -1,4 +1,4 @@
-body 
+.container 
 {
     padding-top: 5rem;
 }
@@ -14,34 +14,35 @@ body
     margin-bottom: 0px;
 }
 
-.navbar-default > a.navbar-brand
+.navbar-header > a.navbar-brand
 {
     color: white;
     font-family: "Neue Helvetica W01","Helvetica Neue",Helvetica,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
     font-weight: bold;
 }
 
-.navbar-default > a.navbar-custom
-{
-    color: white;
-    font-family: "Neue Helvetica W01","Helvetica Neue",Helvetica,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+.navbar-default .navbar-nav li {
+    background-color: #11387D;
     display: block;
-    float: right;
 }
 
-.navbar-default  li > a
+.navbar-nav > li > a.navbar-custom
 {
     color: white;
-    font-size: 16px;
     font-family: "Neue Helvetica W01","Helvetica Neue",Helvetica,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+}
+
+#btnToggle 
+{
+    color: white;
+    font-weight: normal;
+    font-size: 30px;
 }
 
 #navbarsExampleDefault 
 {
     background-color: #11387D;
-    margin-top: 0px;
-    margin-bottom: 50px;
-    
+    margin-top: 50px;
 }
 
 #navbarsExampleDefault > ul
