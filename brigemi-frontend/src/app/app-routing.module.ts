@@ -5,13 +5,15 @@ import { CreateIssueComponent } from './Pages/create-issue/create-issue.componen
 import { ShowIssueComponent } from './Pages/show-issue/show-issue.component';
 import { LoginComponent } from './Pages/login/login.component';
 import { RegistrationComponent } from './Pages/registration/registration.component';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: IssuesComponent },
-  { path: 'createIssues', component: CreateIssueComponent },
-  { path: 'showIssue', component: ShowIssueComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegistrationComponent },
+  { path: '', component: LoginComponent },
+  { path: 'createIssues', component: CreateIssueComponent, canActivate: [AuthGuard] },
+  { path: 'showIssue', component: ShowIssueComponent, canActivate: [AuthGuard] },
+  { path: 'issues', component: IssuesComponent, canActivate: [AuthGuard] },
+  { path: 'register', component: RegistrationComponent},
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
