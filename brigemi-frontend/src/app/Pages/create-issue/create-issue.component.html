@@ -1,18 +1,18 @@
 <!-- Source: https://x-team.com/blog/webcam-image-capture-angular/ -->
 <h1>Create issue</h1>
 
-<form class="form-group">
+<form class="form-group" (ngSubmit)="createIssue()" #form="ngForm">
   <div class="form-group">
-    <input type="text" class="form-control" id="name" aria-describedby="name" placeholder="name">
+    <input type="text" class="form-control" id="name" aria-describedby="name" placeholder="name" [(ngModel)]="model.name" #name="ngModel" name="name" required>
   </div>
   <div class="form-group">
-    <textarea class="form-control" id="description" placeholder="Description" rows="3"></textarea>
+    <textarea class="form-control" id="description" placeholder="Description" rows="3" [(ngModel)]="model.description" name="description" required></textarea>
   </div>
+  <button mat-fab class="btnAdd" style="float: right" type="submit">
+    <mat-icon>add</mat-icon>
+  </button>
 </form>
 
-<button mat-fab class="btnAdd" style="float: right"  (click)="createIssue()">
-  <mat-icon>add</mat-icon>
-</button>
 
 <div><video #video id="video" width="640" height="480" autoplay></video></div>
 <div><button id="snap" (click)="capture()">Snap Photo</button></div>

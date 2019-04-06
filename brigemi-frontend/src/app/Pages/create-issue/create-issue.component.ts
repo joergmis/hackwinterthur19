@@ -4,6 +4,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { RestService } from 'src/app/Services/rest-service';
 import { HttpClient } from '@angular/common/http';
 
+import { Issue } from "src/app/Objects/issue";
+
 @Component({
   selector: 'app-create-issue',
   templateUrl: './create-issue.component.html',
@@ -17,16 +19,19 @@ export class CreateIssueComponent implements OnInit {
   @ViewChild("canvas")
   public canvas: ElementRef
 
+  // An issue id of 0 indicates a new issue to be created
+  model = new Issue(0, "", "", 1);
+
   private restService;
 
-  public constructor(httpClient: HttpClient) { 
+  constructor(httpClient: HttpClient) { 
     this.restService = new RestService(httpClient);
   }
 
   ngOnInit() {
   }
 
-  public ngAfterViewInit() {
+  ngAfterViewInit() {
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
             this.video.nativeElement.srcObject = stream; // .src = window.URL.createObjectURL(stream);
@@ -35,12 +40,17 @@ export class CreateIssueComponent implements OnInit {
     }
   }
 
-  public capture() {
+  capture() {
     var context = this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, 640, 480);
     // this.captures.push(this.canvas.nativeElement.toDataURL("image/png"));
   }
 
-  public createIssue() {
-    // todo
+  createIssue() {
+    this.restService.post(this.model, "issues").subscribe(
+      data => {
+        console.log("POST done");
+      },
+      err => console.error("Erroro: " + err)
+    );
   }
 }
