@@ -1,0 +1,44 @@
+#loginpage {
+    box-shadow: 3px 2px 22px grey;
+    border-radius: 1em;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+#einloggen{
+  margin-bottom: 10px;
+}
+
+#registrieren{
+  margin: 40px 0px 10px 0px;
+}
+
+#btnRegistrieren {
+    margin: 5px 0px 5px 0px;
+    border-color: rgb(171, 173, 171);;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 10px;
+}
+
+#btnEinloggen {
+    margin-top: 10px;
+    background-color: #01009A;
+}
+
+#eingabeBenutzername{
+	margin-bottom: 5px;
+}
+
+#btnEinloggen:hover {
+    background-color: rgb(181, 222, 241);
+    color: black;
+  }
+
+#btnRegistrieren:hover {
+    background-color: rgb(171, 173, 171);
+    color: black;
+}
+	
