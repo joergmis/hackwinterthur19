@@ -6,17 +6,27 @@ import (
 	"log"
 	"os"
 	"path"
+	"time"
 
 	"../db"
 	"github.com/bvinc/go-sqlite-lite/sqlite3"
 	"github.com/fatih/structs"
 	"github.com/gin-gonic/gin"
+	cors "github.com/itsjamie/gin-cors"
 )
 
 // InitRouter initialises the routes
 func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 	router := gin.Default()
-	router.Use(CORSMiddleware())
+	router.Use(cors.Middleware(cors.Config{
+		Origins:         "*",
+		Methods:         "GET, PUT, POST, DELETE",
+		RequestHeaders:  "Origin, Authorization, Content-Type, Datatype",
+		ExposedHeaders:  "",
+		MaxAge:          50 * time.Second,
+		Credentials:     true,
+		ValidateHeaders: false,
+	}))
 	authorized := router.Group("/", gin.BasicAuth(users))
 
 	// dummy route
@@ -104,21 +114,4 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 	})
 
 	return router
-}
-
-// CORSMiddleware acts as cors middleware
-func CORSMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
-
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
-			return
-		}
-
-		c.Next()
-	}
 }
