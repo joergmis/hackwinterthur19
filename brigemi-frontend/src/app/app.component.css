@@ -61,3 +61,10 @@
     font-family: "Neue Helvetica W01","Helvetica Neue",Helvetica,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
     
 }
+
+.navigation-custom, .navigation-custom a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+}
