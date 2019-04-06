@@ -6,7 +6,7 @@
     <h1 class="text-center">Benutzer anlegen</h1>
   </div>
   <div class="container" id="loginpage">
-    <form class="form-horizontal" method="POST" action="">
+    <form class="form-horizontal" #form="ngForm" (ngSubmit)="createUser(form)">
       <div class="row"> 
         <div class="col-sm-4">
           <label name="lblVorname" id="lblVorname" for="txtVorname">
@@ -14,7 +14,7 @@
           </label>
         </div>
         <div class="col">
-          <input type="text" id="txtVorname" name="txtVorname" placeholder="Benutzername" class="form-control input-md" required>
+          <input type="text" id="txtUsername" name="txtUsername" placeholder="Benutzername" class="form-control input-md" ngModel required #txtUsername="ngModel">
         </div>
       </div>
       <div class="row"> 
@@ -24,10 +24,10 @@
           </label>
         </div>
         <div class="col">
-            <input type="password" id="pwPasswort" name="pwPasswort"
+            <input type="password" id="pwPassword" name="pwPassword"
             placeholder="Passwort" class="form-control input-md"
             pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
-            title="Gross- und Kleinschreibung, Zahlen" required>
+            title="Gross- und Kleinschreibung, Zahlen" ngModel required #pwPassword="ngModel">
         </div>
       </div>
       <div class="row"> 
@@ -37,8 +37,8 @@
           </label>
         </div>
         <div class="col">
-            <input type="password" id="pwPasswortConfirm"
-            name="pwPasswortConfirm" placeholder="Passwort wiederholen"
+            <input type="password" id="pwPasswordConfirm"
+            name="pwPasswordConfirm" placeholder="Passwort wiederholen"
             class="form-control input-md"
             pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
             title="Gross- und Kleinschreibung, Zahlen" required>
