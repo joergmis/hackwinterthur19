@@ -13,13 +13,13 @@ import (
 const (
 	// create table statements
 	createUserTable        string = `create table if not exists user(id integer primary key, name text, password text);`
-	createIssueTable       string = `create table if not exists issue(id integer  primary key, name text, description text, userid int, fileid int, documentid int, foreign key(userid) references user(id) on delete cascade, foreign key(fileid) references file(id) on delete cascade, foreign key(documentid) references document(id) on delete cascade);`
-	createFileTable        string = `create table if not exists file(id integer  primary key, location text, documentid int, foreign key(documentid) references document(id) on delete cascade);`
-	createNoteTable        string = `create table if not exists note(id integer  primary key, content text, fileid int, foreign key(fileid) references file(id) on delete cascade);`
-	createDocumentTable    string = `create table if not exists document(id integer  primary key, name text, text text, location text);`
-	createTagTable         string = `create table if not exists tag(id integer  primary key, name text);`
-	createIssueTagTable    string = `create table if not exists issuetag(id integer  primary key, issueid int, tagid int, foreign key(issueid) references issue(id) on delete cascade, foreign key(tagid) references tag(id) on delete cascade);`
-	createDocumentTagTable string = `create table if not exists documenttag(id integer  primary key, documentid int, tagid int, foreign key(documentid) references document(id) on delete cascade, foreign key(tagid) references tag(id) on delete cascade);`
+	createIssueTable       string = `create table if not exists issue(id integer primary key, name text, description text, userid int, fileid int, documentid int, foreign key(userid) references user(id) on delete cascade, foreign key(fileid) references file(id) on delete cascade, foreign key(documentid) references document(id) on delete cascade);`
+	createFileTable        string = `create table if not exists file(id integer primary key, location text, documentid int, foreign key(documentid) references document(id) on delete cascade);`
+	createNoteTable        string = `create table if not exists note(id integer primary key, content text, fileid int, foreign key(fileid) references file(id) on delete cascade);`
+	createDocumentTable    string = `create table if not exists document(id integer primary key, name text, text text, location text);`
+	createTagTable         string = `create table if not exists tag(id integer primary key, name text);`
+	createIssueTagTable    string = `create table if not exists issuetag(id integer primary key, issueid int, tagid int, foreign key(issueid) references issue(id) on delete cascade, foreign key(tagid) references tag(id) on delete cascade);`
+	createDocumentTagTable string = `create table if not exists documenttag(id integer primary key, documentid int, tagid int, foreign key(documentid) references document(id) on delete cascade, foreign key(tagid) references tag(id) on delete cascade);`
 	// insert statements
 	insertUser        string = `insert into user(name, password) values (?,?);`
 	insertFile        string = `insert into file(location, documentid) values (?,?);`
