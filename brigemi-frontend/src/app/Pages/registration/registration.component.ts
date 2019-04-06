@@ -33,7 +33,7 @@ export class RegistrationComponent implements OnInit {
         data => {
           console.log(data);
           main.user.setUserID(data.id);
-          this.router.navigate(['login']);
+          this.router.navigate(['']);
         },
         err => console.error('Observer got an error: ' + err)
       );
