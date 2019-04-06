@@ -3,6 +3,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { RestService } from 'src/app/Services/rest-service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 import { Issue } from "src/app/Objects/issue";
 
@@ -36,7 +37,8 @@ export class CreateIssueComponent implements OnInit {
   private restService;
   private imageToUpload;
 
-  constructor(httpClient: HttpClient) {
+
+  constructor(httpClient: HttpClient, private router : Router) {
     this.httpClient = httpClient;
     this.restService = new RestService(httpClient);
   }
@@ -84,7 +86,10 @@ export class CreateIssueComponent implements OnInit {
       formData.append('image', blob, time.getMilliseconds() + '.png')
       let headers = new HttpHeaders({ "contentType": "multipart/form-data" });
       main.httpClient.post("http://localhost:8090/fileupload", formData, headers).subscribe(
-        data => { console.log(data) },
+        data => {
+          console.log(data);
+          main.router.navigate(["/issues"]);
+        },
         err => console.error(err)
       );
     })
