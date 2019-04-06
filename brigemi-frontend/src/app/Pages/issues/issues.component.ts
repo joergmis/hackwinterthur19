@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 
 import {RestService} from "../../Services/rest-service";
-
-import { Issue } from '../../Objects/issue';
 
 @Component({
   selector: 'app-issues',
@@ -13,7 +12,7 @@ import { Issue } from '../../Objects/issue';
 })
 export class IssuesComponent implements OnInit {
   public issues = [];
-  public documents : Document[] = [];
+  public documents = null;
 
   private restService;
 
@@ -30,11 +29,9 @@ export class IssuesComponent implements OnInit {
   }
 
   searchcall() {
-    console.log(this.model.name);
-    this.restService.post("", "search?tag=" + this.model.name).subscribe(
+    this.restService.post(null, "search?tag=" + this.model.name).subscribe(
       data => {
-        console.log(data);
-        this.issues = data;
+        this.documents = of(data);
       },
       err => console.log(err)
     );
@@ -43,5 +40,4 @@ export class IssuesComponent implements OnInit {
   redirectFunction(url : string, id : number) : void {
     this.router.navigate([url],{ queryParams: { id: id } });
   }
-
 }

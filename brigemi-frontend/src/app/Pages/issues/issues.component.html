@@ -7,6 +7,21 @@
   </button>
 </form>
 
+<div *ngIf="documents != null">
+  <mat-toolbar>
+    <span>Searched documents for tag <strong>{{model.name}}</strong></span>
+  </mat-toolbar>
+    <div *ngFor="let document of documents | async">
+      <mat-card>
+        <mat-card-title>{{document.Name}}</mat-card-title>
+        <mat-card-content>
+          <p>{{document.Text}}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+</div>
+
+<br />
 <mat-toolbar>
   <span>Open Issues</span>
 </mat-toolbar>
