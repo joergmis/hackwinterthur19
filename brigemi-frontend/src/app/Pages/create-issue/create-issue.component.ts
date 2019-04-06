@@ -80,7 +80,8 @@ export class CreateIssueComponent implements OnInit {
     this.canvas.nativeElement.toBlob(function (data) {
       blob = data;
       let formData = new FormData();
-      formData.append('image', blob, 'test.png')
+      let time = new Date(100);
+      formData.append('image', blob, time.getMilliseconds() + '.png')
       let headers = new HttpHeaders({ "contentType": "multipart/form-data" });
       main.httpClient.post("http://localhost:8090/fileupload", formData, headers).subscribe(
         data => { console.log(data) },
