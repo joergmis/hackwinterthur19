@@ -1,17 +1,25 @@
 <div class="col-lg-3" id="loginpage">
   <p style="color:red;"></p>
   <p style="color:green;"></p>
-  <form class="form-signin" method="POST" action="${pageContext.request.contextPath}/JSP/login.jsp">
+  <form class="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <h2 class="form-signin-heading">Login</h2>
-    <label name="lbleingabeBenutzername" id="lbleingabeBenutzername" for="eingabeBenutzername" class="sr-only">Benutzername</label>
-    <input type="text" name="eingabeBenutzername" id="eingabeBenutzername" class="form-control" placeholder="Benutzername" required autofocus>
-    
-    <label name="lbleingabePasswort" id="lbleingabePasswort" for="eingabePasswort" class="sr-only">Passwort</label>
-    <input type="password" required name="eingabePasswort" id="eingabePasswort" class="form-control" placeholder="Passwort">
+    <div class="form-group">
+      <label name="lbleingabeBenutzername" id="lbleingabeBenutzername" for="username">Benutzername</label>
+      <input type="text" formControlName="username" name="eingabeBenutzername" id="eingabeBenutzername" class="form-control" placeholder="Benutzername" required autofocus [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+      <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+      </div> 
+    </div>
+    <div class="form-group">
+      <label name="lbleingabePasswort" id="lbleingabePasswort" for="password">Passwort</label>
+      <input type="password" formControlName="password" required name="eingabePasswort" id="eingabePasswort" class="form-control" placeholder="Passwort">
+    </div>
+    <div class="form-group">
       <input type="submit" required name="btnEinloggen" id="btnEinloggen" class="btn btn-lg btn-primary btn-block" value="Anmelden">
+    </div>
   </form>
 
-  <form method="POST" action="${pageContext.request.contextPath}/JSP/registration.jsp">
+  <form method="POST" action="">
     <button type="submit" name="btnRegistrieren" id="btnRegistrieren" class="btn btn-lg btn-default btn-block" (click)="redirectFunction('/register')">Registrieren</button>
   </form>
 </div>
