@@ -50,7 +50,14 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 	router.GET("/issues", func(c *gin.Context) {
 		issues := db.GetAllIssues(conn)
 		log.Print(issues)
+		if len(issues) == 0 {
+			type test struct {
+				Name string `json:"name"`
+			}
+			c.JSON(200, []test{test{Name:"hello"}, test{Name:"hello"}})
+		} else {
 		c.JSON(200, structs.Map(issues))
+	}
 	})
 
 	// create an issue
