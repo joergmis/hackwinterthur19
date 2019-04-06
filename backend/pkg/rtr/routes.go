@@ -52,14 +52,14 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 	})
 
 	// get a specifig issue
-	authorized.GET("/issues/id", func(c *gin.Context) {
-		// TODO:
-		c.JSON(200, gin.H{"hello": "world", "bye": "world"})
+	authorized.GET("/issues/:id", func(c *gin.Context) {
+		issue := db.GetSpecIssue(conn, c.Param("id"))
+		c.JSON(200, structs.Map(issue))
 	})
 
 	// delete a specific issue
-	authorized.DELETE("/issues/id", func(c *gin.Context) {
-		// TODO:
+	authorized.DELETE("/issues/:id", func(c *gin.Context) {
+		db.DeleteSpecIssue(conn, c.Param("id"))
 		c.JSON(200, gin.H{"hello": "world", "bye": "world"})
 	})
 

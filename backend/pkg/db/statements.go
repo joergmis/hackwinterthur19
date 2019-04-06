@@ -13,9 +13,9 @@ import (
 const (
 	// create table statements
 	createUserTable     string = `create table if not exists user(id int primary key, name text, password text);`
-	createIssueTable    string = `create table if not exists issue(id int primary key, name text, description text, userid int, fileid int, documentid int, foreign key(userid) references user(id), foreign key(fileid) references file(id), foreign key(documentid) referecnes document(id));`
-	createFileTable     string = `create table if not exists file(id int primary key, location text, documentid int, foreign key(documentid) references document(id));`
-	createNoteTable     string = `create table if not exists note(id int primary key, content text, fileid int, foreign key(fileid) references file(id));`
+	createIssueTable    string = `create table if not exists issue(id int primary key, name text, description text, userid int, fileid int, documentid int, foreign key(userid) references user(id) on delete cascade, foreign key(fileid) references file(id) on delete cascade, foreign key(documentid) references document(id) on delete cascade);`
+	createFileTable     string = `create table if not exists file(id int primary key, location text, documentid int, foreign key(documentid) references document(id) on delete cascade);`
+	createNoteTable     string = `create table if not exists note(id int primary key, content text, fileid int, foreign key(fileid) references file(id) on delete cascade);`
 	createDocumentTable string = `create table if not exists document(id int primary key, name text, location text);`
 	// insert statements
 	insertUser     string = `insert into user(name, password) values (?,?);`
@@ -28,6 +28,8 @@ const (
 	selectIssues        string = `select * from issue;`
 	selectSpecificIssue string = `select * from issue where issue.id = ?;`
 	selectFileLocation  string = `select file.location from file where file.id = ?;`
+	// delete statements
+	deleteIssue string = `delete * from issue where issue.id = ?;`
 )
 
 // CreateTables creates the tables if they don't exist
@@ -68,6 +70,19 @@ func InsertUser(conn *sqlite3.Conn, user *User) *User {
 	return user
 }
 
+// DeleteSpecIssue delets an issue
+func DeleteSpecIssue(conn *sqlite3.Conn, id string) {
+	stmt, err := conn.Prepare(deleteIssue, id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+	err = stmt.Exec()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 // GetUsers returns a map with all the users which
 // are in the database
 func GetUsers(conn *sqlite3.Conn) (map[string]string, error) {
@@ -103,9 +118,9 @@ func GetUsers(conn *sqlite3.Conn) (map[string]string, error) {
 }
 
 // GetSpecIssue returns a specific issue
-func GetSpecIssue(conn *sqlite3.Conn, id int) *Issue {
+func GetSpecIssue(conn *sqlite3.Conn, id string) *Issue {
 	issue := &Issue{}
-	stmt, err := conn.Prepare(selectSpecificIssue)
+	stmt, err := conn.Prepare(selectSpecificIssue, id)
 	if err != nil {
 		log.Fatal(err)
 	}
