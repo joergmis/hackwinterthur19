@@ -2,59 +2,59 @@ package db
 
 // User representation
 type User struct {
-	ID       int    `json:"id"`
-	Name     string `json:"name"`
-	Password string `json:"password"`
+	ID       int    `json:"ID"`
+	Name     string `json:"Name"`
+	Password string `json:"Password"`
 }
 
 // Tag representation
 type Tag struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+	ID   int    `json:"ID"`
+	Name string `json:"Name"`
 }
 
 // IssueTag representation
 type IssueTag struct {
-	ID      int `json:"id"`
-	Issueid int `json:"issueid"`
-	Tagid   int `json:"tagid"`
+	ID      int `json:"ID"`
+	IssueID int `json:"IssueID"`
+	TagID   int `json:"TagID"`
 }
 
 // DocumentTag representation
 type DocumentTag struct {
-	ID         int `json:"id"`
-	Documentid int `json:"documentid"`
-	Tagid      int `json:"tagid"`
+	ID         int `json:"ID"`
+	DocumentID int `json:"DocumentID"`
+	TagID      int `json:"TagID"`
 }
 
 // Issue representation
 type Issue struct {
-	ID          int    `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Userid      int    `json:"userid"`
-	Fileid      int    `json:"fileid"`
-	Documentid  int    `json:"documentid"`
+	ID          int    `json:"ID"`
+	Name        string `json:"Name"`
+	Description string `json:"Description"`
+	UserID      int    `json:"UserID"`
+	FileID      int    `json:"FileID"`
+	DocumentID  int    `json:"DocumentID"`
 }
 
 // Document representation
 type Document struct {
-	ID       int    `json:"id"`
-	Name     string `json:"name"`
-	Text     string `json:"text"`
-	Location string `json:"location"`
+	ID       int    `json:"ID"`
+	Name     string `json:"Name"`
+	Text     string `json:"Text"`
+	Location string `json:"Location"`
 }
 
 // File representation
 type File struct {
-	ID         int    `json:"id"`
-	Location   string `json:"location"`
-	Documentid int    `json:"documentid"`
+	ID         int    `json:"ID"`
+	Location   string `json:"Location"`
+	DocumentID int    `json:"DocumentID"`
 }
 
 // Note representation
 type Note struct {
-	ID      int    `json:"id"`
-	Content string `json:"content"`
-	Fileid  int    `json:"fileid"`
+	ID      int    `json:"ID"`
+	Content string `json:"Content"`
+	FileID  int    `json:"FileID"`
 }
