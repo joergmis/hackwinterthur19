@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {RestService} from "../../Services/rest-service";
 
 @Component({
   selector: 'app-issues',
@@ -6,10 +8,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./issues.component.css']
 })
 export class IssuesComponent implements OnInit {
+  public issues;
 
-  constructor() { }
+  private restService;
+
+  constructor(private http: HttpClient) {
+    this.restService = new RestService(this.http);
+  }
 
   ngOnInit() {
+    this.issues = this.restService.getAll("issues");
   }
 
 }
