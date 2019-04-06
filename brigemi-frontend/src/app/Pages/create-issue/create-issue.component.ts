@@ -19,16 +19,18 @@ export class CreateIssueComponent implements OnInit {
   @ViewChild("canvas")
   public canvas: ElementRef
 
+  model = new Issue(0, "", "", 0);
+
   private restService;
 
-  public constructor(httpClient: HttpClient) { 
+  constructor(httpClient: HttpClient) { 
     this.restService = new RestService(httpClient);
   }
 
   ngOnInit() {
   }
 
-  public ngAfterViewInit() {
+  ngAfterViewInit() {
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
             this.video.nativeElement.srcObject = stream; // .src = window.URL.createObjectURL(stream);
@@ -37,12 +39,14 @@ export class CreateIssueComponent implements OnInit {
     }
   }
 
-  public capture() {
+  capture() {
     var context = this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, 640, 480);
     // this.captures.push(this.canvas.nativeElement.toDataURL("image/png"));
   }
 
-  public createIssue() {
-    // todo
+  createIssue() {
+    console.log(this.model.name);
+    console.log(this.model.description);
+    console.log("-------------");
   }
 }
