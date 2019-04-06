@@ -22,7 +22,6 @@ type Document struct {
 	ID       int    `json:"id"`
 	Name     string `json:"name"`
 	Text     string `json:"text"`
-	Fileid   int    `json:"fileid"`
 	Location string `json:"location"`
 }
 
