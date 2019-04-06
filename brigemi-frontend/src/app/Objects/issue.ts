@@ -2,9 +2,6 @@ export class Issue {
     private id;
     private name;
     private password;
-    //let Artwks: TournamentParticipant []=[];
-    
-    
     
     constructor(name: string, password: string) {
         this.name = name;
