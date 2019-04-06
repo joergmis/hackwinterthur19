@@ -11,12 +11,11 @@
       <mat-toolbar>
         <span>Open Issues</span>
       </mat-toolbar>
-      <mat-list>
-          <div *ngFor="let issue of issues | async">
-          <mat-list-item >{{issue.name}}</mat-list-item>
-          <mat-divider></mat-divider>
-          </div>
-      </mat-list>
+      <mat-nav-list>
+          <mat-list-item (click)="redirectFunction('/showIssue', issue.id)" *ngFor="let issue of issues | async">
+              {{issue.name}}
+          </mat-list-item>
+        </mat-nav-list>
 
       <button mat-fab class="btnAdd" style="float: right"  (click)="redirectFunction('/createIssue')">
         <mat-icon>add</mat-icon>

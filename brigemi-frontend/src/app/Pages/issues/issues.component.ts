@@ -10,7 +10,7 @@ import { Issue } from '../../Objects/issue';
   styleUrls: ['./issues.component.css']
 })
 export class IssuesComponent implements OnInit {
-  public issues : Issue;
+  public issues : Issue[] = [];
 
   private restService;
 
