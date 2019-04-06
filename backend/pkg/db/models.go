@@ -16,15 +16,15 @@ type Tag struct {
 // IssueTag representation
 type IssueTag struct {
 	ID      int `json:"ID"`
-	IssueID int `json:"IssueID"`
-	TagID   int `json:"TagID"`
+	Issueid int `json:"Issueid"`
+	Tagid   int `json:"Tagid"`
 }
 
 // DocumentTag representation
 type DocumentTag struct {
 	ID         int `json:"ID"`
-	DocumentID int `json:"DocumentID"`
-	TagID      int `json:"TagID"`
+	Documentid int `json:"Documentid"`
+	Tagid      int `json:"Tagid"`
 }
 
 // Issue representation
@@ -32,9 +32,9 @@ type Issue struct {
 	ID          int    `json:"ID"`
 	Name        string `json:"Name"`
 	Description string `json:"Description"`
-	UserID      int    `json:"UserID"`
-	FileID      int    `json:"FileID"`
-	DocumentID  int    `json:"DocumentID"`
+	Userid      int    `json:"Userid"`
+	Fileid      int    `json:"Fileid"`
+	Documentid  int    `json:"Documentid"`
 }
 
 // Document representation
@@ -49,12 +49,12 @@ type Document struct {
 type File struct {
 	ID         int    `json:"ID"`
 	Location   string `json:"Location"`
-	DocumentID int    `json:"DocumentID"`
+	Documentid int    `json:"Documentid"`
 }
 
 // Note representation
 type Note struct {
 	ID      int    `json:"ID"`
 	Content string `json:"Content"`
-	FileID  int    `json:"FileID"`
+	Fileid  int    `json:"Fileid"`
 }
