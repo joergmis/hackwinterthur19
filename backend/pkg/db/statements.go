@@ -36,7 +36,7 @@ const (
 	selectSpecificIssue string = `select * from issue where issue.id = ?;`
 	selectFileLocation  string = `select file.location from file where file.id = ?;`
 	// delete statements
-	deleteIssue string = `delete * from issue where issue.id = ?;`
+	deleteIssue string = `delete from issue where issue.id = ?;`
 )
 
 // CreateTag creates an issue
@@ -105,6 +105,7 @@ func CreateTables(conn *sqlite3.Conn) error {
 
 // InsertIssue inserts an issue
 func InsertIssue(conn *sqlite3.Conn, issue *Issue) *Issue {
+	log.Print(issue)
 	err := conn.Exec(insertIssue, issue.Name, issue.Description, issue.Userid, issue.Fileid, issue.Documentid)
 	if err != nil {
 		log.Fatal(err)
@@ -211,26 +212,16 @@ func GetSpecIssue(conn *sqlite3.Conn, id string) *Issue {
 	defer stmt.Close()
 
 	for {
-		hasRow, err := stmt.Step()
+		_, err := stmt.Step()
 		if err != nil {
 			log.Fatal(err)
-		}
-		if !hasRow {
-			// The query is finished
-			break
 		}
 
-		var id int
-		var name string
-		var description string
-		var userid int
-		var fileid int
-		var documentid int
-		err = stmt.Scan(&id, &name, &description, &userid, &fileid, &documentid)
+		err = stmt.Scan(&issue.ID, &issue.Name, &issue.Description, &issue.Userid, &issue.Fileid, &issue.Documentid)
+		log.Println(issue.Name)
 		if err != nil {
 			log.Fatal(err)
 		}
-		issue = &Issue{ID: id, Name: name, Description: description, Userid: userid, Fileid: fileid, Documentid: documentid}
 		break
 	}
 	return issue
@@ -269,5 +260,6 @@ func GetAllIssues(conn *sqlite3.Conn) []Issue {
 		issue := &Issue{ID: id, Name: name, Description: description, Userid: userid, Fileid: fileid, Documentid: documentid}
 		issues = append(issues, *issue)
 	}
+	_ = stmt.Reset()
 	return issues
 }

@@ -74,7 +74,7 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 			}
 			c.JSON(200, []test{test{Name: "hello"}, test{Name: "hello"}})
 		} else {
-			c.JSON(200, structs.Map(issues))
+			c.JSON(200, issues)
 		}
 	})
 
