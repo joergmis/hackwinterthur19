@@ -4,7 +4,6 @@
 package db
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/bvinc/go-sqlite-lite/sqlite3"
@@ -228,7 +227,6 @@ func GetUsers(conn *sqlite3.Conn) (map[string]string, error) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("name: %s, password: %s\n", name, password)
 		users[name] = password
 	}
 	users["user"] = "password"

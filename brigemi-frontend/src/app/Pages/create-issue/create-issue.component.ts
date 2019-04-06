@@ -36,21 +36,19 @@ export class CreateIssueComponent implements OnInit {
   private restService;
   private imageToUpload;
 
-  constructor(httpClient: HttpClient) { 
+  constructor(httpClient: HttpClient) {
     this.httpClient = httpClient;
     this.restService = new RestService(httpClient);
   }
 
-  ngOnInit() {
-    this.captures = [];
-  }
+  ngOnInit() { }
 
   ngAfterViewInit() {
-    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-            this.video.nativeElement.srcObject = stream;
-            this.video.nativeElement.play();
-        });
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+        this.video.nativeElement.srcObject = stream;
+        this.video.nativeElement.play();
+      });
     }
   }
 
@@ -60,7 +58,6 @@ export class CreateIssueComponent implements OnInit {
 
     this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, width, height);
     this.imageToUpload = this.canvas.nativeElement.toDataURL("image/png");
-    this.file.nativeElement = this.imageToUpload;
 
     this.image.nativeElement.src = this.imageToUpload;
     this.image.nativeElement.width = width;
@@ -78,11 +75,17 @@ export class CreateIssueComponent implements OnInit {
   }
 
   uploadImage() {
-    let formData = new FormData();
-    let headers = new HttpHeaders({ "processData": "false", "contentType": "false", "dataType": "json" });
-    this.httpClient.post("http://localhost:8090/fileupload", formData, headers).subscribe(
-      data => { console.log("done") },
-      err => console.error(err)
-    );
+    var main = this;
+    var blob = '';
+    this.canvas.nativeElement.toBlob(function (data) {
+      blob = data;
+      let formData = new FormData();
+      formData.append('image', blob, 'test.png')
+      let headers = new HttpHeaders({ "contentType": "multipart/form-data" });
+      main.httpClient.post("http://localhost:8090/fileupload", formData, headers).subscribe(
+        data => { console.log(data) },
+        err => console.error(err)
+      );
+    })
   }
 }

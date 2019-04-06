@@ -133,7 +133,7 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 
 	// file upload
 	router.POST("/fileupload", func(c *gin.Context) {
-		file, header, err := c.Request.FormFile("upload")
+		file, header, err := c.Request.FormFile("image")
 		filename := header.Filename
 		fmt.Println(header.Filename)
 		out, err := os.Create(path.Join(".", "tmp", filename))
