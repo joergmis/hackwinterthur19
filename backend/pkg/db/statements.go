@@ -25,7 +25,7 @@ const (
 	insertFile        string = `insert into file(location, documentid) values (?,?);`
 	insertFileWithout string = `insert into file(location) values (?);`
 	insertNote        string = `insert into note(content, fileid) values (?,?);`
-	insertIssue       string = `insert into issue(id, name, description, userid, fileid, documentid) values (?,?,?,?,?,?);`
+	insertIssue       string = `insert into issue(name, description, userid, fileid, documentid) values (?,?,?,?,?);`
 	insertDocument    string = `insert into document(name, text, location) values (?,?,?);`
 	insertTag         string = `insert into tag(name) values (?);`
 	insertIssueTag    string = `insert into issuetag(issueid, tagid) values (?,?);`
@@ -41,7 +41,7 @@ const (
 
 // CreateTag creates an issue
 func CreateTag(conn *sqlite3.Conn, tag *Tag) *Tag {
-	err := conn.Exec(insertTag, tag)
+	err := conn.Exec(insertTag, tag.Name)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -105,7 +105,7 @@ func CreateTables(conn *sqlite3.Conn) error {
 
 // InsertIssue inserts an issue
 func InsertIssue(conn *sqlite3.Conn, issue *Issue) *Issue {
-	err := conn.Exec(insertIssue, issue.ID, issue.Name, issue.Description, issue.Userid, issue.Fileid, issue.Documentid)
+	err := conn.Exec(insertIssue, issue.Name, issue.Description, issue.Userid, issue.Fileid, issue.Documentid)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -148,14 +148,7 @@ func InsertDocument(conn *sqlite3.Conn, document *Document) *Document {
 
 // InsertFile creates a new file
 func InsertFile(conn *sqlite3.Conn, file *File) *File {
-	if file.Documentid != 0 {
-		err := conn.Exec(insertFile, file.Location, file.Documentid)
-		if err != nil {
-			log.Fatal(err)
-		}
-		file.ID = int(conn.LastInsertRowID())
-		return file
-	}
+	log.Print(file.Location)
 	err := conn.Exec(insertFileWithout, file.Location)
 	if err != nil {
 		log.Fatal(err)
