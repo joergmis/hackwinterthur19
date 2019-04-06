@@ -19,7 +19,8 @@ export class CreateIssueComponent implements OnInit {
   @ViewChild("canvas")
   public canvas: ElementRef
 
-  model = new Issue(0, "", "", 0);
+  // An issue id of 0 indicates a new issue to be created
+  model = new Issue(0, "", "", 1);
 
   private restService;
 
@@ -45,8 +46,11 @@ export class CreateIssueComponent implements OnInit {
   }
 
   createIssue() {
-    console.log(this.model.name);
-    console.log(this.model.description);
-    console.log("-------------");
+    this.restService.post(this.model, "issues").subscribe(
+      data => {
+        console.log("POST done");
+      },
+      err => console.error("Erroro: " + err)
+    );
   }
 }
