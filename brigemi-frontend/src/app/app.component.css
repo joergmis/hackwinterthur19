@@ -7,3 +7,52 @@ body
 {
     background-color: white;
 }
+
+.navbar-default
+{
+    background-color: #11387D;
+    margin-bottom: 0px;
+}
+
+.navbar-default > a.navbar-brand
+{
+    color: white;
+    font-family: "Neue Helvetica W01","Helvetica Neue",Helvetica,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    font-weight: bold;
+}
+
+.navbar-default > a.navbar-custom
+{
+    color: white;
+    font-family: "Neue Helvetica W01","Helvetica Neue",Helvetica,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    display: block;
+    float: right;
+}
+
+.navbar-default  li > a
+{
+    color: white;
+    font-size: 16px;
+    font-family: "Neue Helvetica W01","Helvetica Neue",Helvetica,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+}
+
+#navbarsExampleDefault 
+{
+    background-color: #11387D;
+    margin-top: 0px;
+    margin-bottom: 50px;
+    
+}
+
+#navbarsExampleDefault > ul
+{
+    padding: 20px 0px 20px 50px;
+}
+
+#navbarsExampleDefault a
+{
+    color: white;
+    font-size: 16px;
+    font-family: "Neue Helvetica W01","Helvetica Neue",Helvetica,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    
+}
