@@ -41,9 +41,15 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 	router.POST("/search", func(c *gin.Context) {
 		params := c.Request.URL.Query()
 		var docs []*db.Document
+		if len(params) == 0 {
+			c.JSON(512, "no params")
+			return
+		}
 		for _, p := range params {
 			for _, m := range p {
 				docs = db.SearchForDocuments(conn, m)
+				c.JSON(200, docs)
+				return
 			}
 		}
 		c.JSON(200, docs)

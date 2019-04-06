@@ -35,7 +35,11 @@ const (
 	selectIssues        string = `select * from issue;`
 	selectSpecificIssue string = `select * from issue where issue.id = ?;`
 	selectFileLocation  string = `select file.location from file where file.id = ?;`
-	selectDocuments     string = `select * from document join documenttag join tag where document.id = documenttag.documentid and documenttag.tagid = tag.id and tag = ?;`
+	selectDocuments     string = `select *
+									from document
+									inner join documenttag on document.id = documenttag.documentid
+									inner join tag on documenttag.tagid = tag.id
+									where tag.name = ?;`
 	// delete statements
 	deleteIssue string = `delete from issue where issue.id = ?;`
 )
@@ -296,19 +300,26 @@ func GetAllIssues(conn *sqlite3.Conn) []Issue {
 // InsertTestData inserts some test data
 func InsertTestData(conn *sqlite3.Conn) {
 	user := &User{Name: "test", Password: "test"}
-	tag := &Tag{Name: "testtag"}
+	tag := &Tag{Name: "one"}
+	tag2 := &Tag{Name: "silvester"}
 	issuetag := &IssueTag{}
 	doctag := &DocumentTag{}
+	doctag2 := &DocumentTag{}
 	file := &File{Location: "testlocation of the file"}
 	doc := &Document{Name: "testdocument", Text: "content of the document", Location: "testlocation of the document"}
+	doc2 := &Document{Name: "testdocument2", Text: "content of the document2", Location: "testlocation of the document2"}
 	note := &Note{Content: "testlocation of the note"}
 	issue := &Issue{Name: "name of the issue", Description: "description of test issue"}
 	err := conn.Exec(insertUser, user.Name, user.Password)
 	user.ID = int(conn.LastInsertRowID())
 	err = conn.Exec(insertDocument, doc.Name, doc.Text, doc.Location)
 	doc.ID = int(conn.LastInsertRowID())
+	err = conn.Exec(insertDocument, doc2.Name, doc2.Text, doc2.Location)
+	doc2.ID = int(conn.LastInsertRowID())
 	err = conn.Exec(insertTag, tag.Name)
 	tag.ID = int(conn.LastInsertRowID())
+	err = conn.Exec(insertTag, tag2.Name)
+	tag2.ID = int(conn.LastInsertRowID())
 	err = conn.Exec(insertFile, file.Location, doc.ID)
 	file.ID = int(conn.LastInsertRowID())
 	err = conn.Exec(insertNote, note.Content, file.ID)
@@ -319,6 +330,8 @@ func InsertTestData(conn *sqlite3.Conn) {
 	issuetag.ID = int(conn.LastInsertRowID())
 	err = conn.Exec(insertDocumentTag, doc.ID, tag.ID)
 	doctag.ID = int(conn.LastInsertRowID())
+	err = conn.Exec(insertDocumentTag, doc2.ID, tag2.ID)
+	doctag2.ID = int(conn.LastInsertRowID())
 	if err != nil {
 		log.Fatal(err)
 	}
