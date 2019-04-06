@@ -29,12 +29,13 @@ const (
 	insertDocument    string = `insert into document(name, text, location) values (?,?,?);`
 	insertTag         string = `insert into tag(name) values (?);`
 	insertIssueTag    string = `insert into issuetag(issueid, tagid) values (?,?);`
-	insertDocumentTag string = `insert into documenttag(documentid, tagid), values (?,?);`
+	insertDocumentTag string = `insert into documenttag(documentid, tagid) values (?,?);`
 	// select statements
 	selectUsers         string = `select user.name, user.password from user;`
 	selectIssues        string = `select * from issue;`
 	selectSpecificIssue string = `select * from issue where issue.id = ?;`
 	selectFileLocation  string = `select file.location from file where file.id = ?;`
+	selectDocuments     string = `select * from document join documenttag join tag where document.id = documenttag.documentid and documenttag.tagid = tag.id and tag = ?;`
 	// delete statements
 	deleteIssue string = `delete from issue where issue.id = ?;`
 )
@@ -57,6 +58,34 @@ func CreateIssueTag(conn *sqlite3.Conn, issueTag *IssueTag) *IssueTag {
 	}
 	issueTag.ID = int(conn.LastInsertRowID())
 	return issueTag
+}
+
+// SearchForDocuments searches for Documents which are assigned to the tags
+func SearchForDocuments(conn *sqlite3.Conn, tag string) []*Document {
+	documents := []*Document{}
+	stmt, err := conn.Prepare(selectDocuments, tag)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+
+	for {
+		hasRow, err := stmt.Step()
+		if err != nil {
+			log.Fatal(err)
+		}
+		if !hasRow {
+			break
+		}
+
+		doc := &Document{}
+		err = stmt.Scan(&doc.ID, &doc.Name, &doc.Text, &doc.Location)
+		if err != nil {
+			log.Fatal(err)
+		}
+		documents = append(documents, doc)
+	}
+	return documents
 }
 
 // CreateDocumentTag creates an issue
@@ -262,4 +291,35 @@ func GetAllIssues(conn *sqlite3.Conn) []Issue {
 	}
 	_ = stmt.Reset()
 	return issues
+}
+
+// InsertTestData inserts some test data
+func InsertTestData(conn *sqlite3.Conn) {
+	user := &User{Name: "test", Password: "test"}
+	tag := &Tag{Name: "testtag"}
+	issuetag := &IssueTag{}
+	doctag := &DocumentTag{}
+	file := &File{Location: "testlocation of the file"}
+	doc := &Document{Name: "testdocument", Text: "content of the document", Location: "testlocation of the document"}
+	note := &Note{Content: "testlocation of the note"}
+	issue := &Issue{Name: "name of the issue", Description: "description of test issue"}
+	err := conn.Exec(insertUser, user.Name, user.Password)
+	user.ID = int(conn.LastInsertRowID())
+	err = conn.Exec(insertDocument, doc.Name, doc.Text, doc.Location)
+	doc.ID = int(conn.LastInsertRowID())
+	err = conn.Exec(insertTag, tag.Name)
+	tag.ID = int(conn.LastInsertRowID())
+	err = conn.Exec(insertFile, file.Location, doc.ID)
+	file.ID = int(conn.LastInsertRowID())
+	err = conn.Exec(insertNote, note.Content, file.ID)
+	note.ID = int(conn.LastInsertRowID())
+	err = conn.Exec(insertIssue, issue.Name, issue.Description, user.ID, file.ID, doc.ID)
+	issue.ID = int(conn.LastInsertRowID())
+	err = conn.Exec(insertIssueTag, issue.ID, tag.ID)
+	issuetag.ID = int(conn.LastInsertRowID())
+	err = conn.Exec(insertDocumentTag, doc.ID, tag.ID)
+	doctag.ID = int(conn.LastInsertRowID())
+	if err != nil {
+		log.Fatal(err)
+	}
 }
