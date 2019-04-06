@@ -29,11 +29,28 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 	}))
 	// authorized := router.Group("/", gin.BasicAuth(users))
 
-	// dummy route
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
+	// create tag
+	router.POST("/tags", func(c *gin.Context) {
+		tag := &db.Tag{}
+		c.Bind(&tag)
+		tag = db.CreateTag(conn, tag)
+		c.JSON(200, structs.Map(tag))
+	})
+
+	// create issue tag
+	router.POST("/issuetags", func(c *gin.Context) {
+		issueTag := &db.IssueTag{}
+		c.Bind(&issueTag)
+		issueTag = db.CreateIssueTag(conn, issueTag)
+		c.JSON(200, structs.Map(issueTag))
+	})
+
+	// create document tag
+	router.POST("/documenttags", func(c *gin.Context) {
+		documentTag := &db.DocumentTag{}
+		c.Bind(&documentTag)
+		documentTag = db.CreateDocumentTag(conn, documentTag)
+		c.JSON(200, structs.Map(documentTag))
 	})
 
 	// create user (unauthorized!)
@@ -50,14 +67,15 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 	router.GET("/issues", func(c *gin.Context) {
 		issues := db.GetAllIssues(conn)
 		log.Print(issues)
+		// add test issue if database is empty
 		if len(issues) == 0 {
 			type test struct {
 				Name string `json:"name"`
 			}
-			c.JSON(200, []test{test{Name:"hello"}, test{Name:"hello"}})
+			c.JSON(200, []test{test{Name: "hello"}, test{Name: "hello"}})
 		} else {
-		c.JSON(200, structs.Map(issues))
-	}
+			c.JSON(200, structs.Map(issues))
+		}
 	})
 
 	// create an issue

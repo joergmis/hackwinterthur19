@@ -7,6 +7,26 @@ type User struct {
 	Password string `json:"password"`
 }
 
+// Tag representation
+type Tag struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+// IssueTag representation
+type IssueTag struct {
+	ID      int `json:"id"`
+	Issueid int `json:"issueid"`
+	Tagid   int `json:"tagid"`
+}
+
+// DocumentTag representation
+type DocumentTag struct {
+	ID         int `json:"id"`
+	Documentid int `json:"documentid"`
+	Tagid      int `json:"tagid"`
+}
+
 // Issue representation
 type Issue struct {
 	ID          int    `json:"id"`

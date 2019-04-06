@@ -12,18 +12,24 @@ import (
 
 const (
 	// create table statements
-	createUserTable     string = `create table if not exists user(id int primary key, name text, password text);`
-	createIssueTable    string = `create table if not exists issue(id int primary key, name text, description text, userid int, fileid int, documentid int, foreign key(userid) references user(id) on delete cascade, foreign key(fileid) references file(id) on delete cascade, foreign key(documentid) references document(id) on delete cascade);`
-	createFileTable     string = `create table if not exists file(id int primary key, location text, documentid int, foreign key(documentid) references document(id) on delete cascade);`
-	createNoteTable     string = `create table if not exists note(id int primary key, content text, fileid int, foreign key(fileid) references file(id) on delete cascade);`
-	createDocumentTable string = `create table if not exists document(id int primary key, name text, text text, location text);`
+	createUserTable        string = `create table if not exists user(id int primary key, name text, password text);`
+	createIssueTable       string = `create table if not exists issue(id int primary key, name text, description text, userid int, fileid int, documentid int, foreign key(userid) references user(id) on delete cascade, foreign key(fileid) references file(id) on delete cascade, foreign key(documentid) references document(id) on delete cascade);`
+	createFileTable        string = `create table if not exists file(id int primary key, location text, documentid int, foreign key(documentid) references document(id) on delete cascade);`
+	createNoteTable        string = `create table if not exists note(id int primary key, content text, fileid int, foreign key(fileid) references file(id) on delete cascade);`
+	createDocumentTable    string = `create table if not exists document(id int primary key, name text, text text, location text);`
+	createTagTable         string = `create table if not exists tag(id int primary key, name text);`
+	createIssueTagTable    string = `create table if not exists issuetag(id int primary key, issueid int, tagid int, foreign key(issueid) references issue(id) on delete cascade, foreign key(tagid) references tag(id) on delete cascade);`
+	createDocumentTagTable string = `create table if not exists documenttag(id int primary key, documentid int, tagid int, foreign key(documentid) references document(id) on delete cascade, foreign key(tagid) references tag(id) on delete cascade);`
 	// insert statements
 	insertUser        string = `insert into user(name, password) values (?,?);`
 	insertFile        string = `insert into file(location, documentid) values (?,?);`
 	insertFileWithout string = `insert into file(location) values (?);`
 	insertNote        string = `insert into note(content, fileid) values (?,?);`
-	insertIssue       string = `insert into issue(id, name, description, userid, fileid, documentid) values (?,?,?,?,?,?)`
+	insertIssue       string = `insert into issue(id, name, description, userid, fileid, documentid) values (?,?,?,?,?,?);`
 	insertDocument    string = `insert into document(name, text, location) values (?,?,?);`
+	insertTag         string = `insert into tag(name) values (?);`
+	insertIssueTag    string = `insert into issuetag(issueid, tagid) values (?,?);`
+	insertDocumentTag string = `insert into documenttag(documentid, tagid), values (?,?);`
 	// select statements
 	selectUsers         string = `select user.name, user.password from user;`
 	selectIssues        string = `select * from issue;`
@@ -32,6 +38,36 @@ const (
 	// delete statements
 	deleteIssue string = `delete * from issue where issue.id = ?;`
 )
+
+// CreateTag creates an issue
+func CreateTag(conn *sqlite3.Conn, tag *Tag) *Tag {
+	err := conn.Exec(insertTag, tag)
+	if err != nil {
+		log.Fatal(err)
+	}
+	tag.ID = int(conn.LastInsertRowID())
+	return tag
+}
+
+// CreateIssueTag creates an issue
+func CreateIssueTag(conn *sqlite3.Conn, issueTag *IssueTag) *IssueTag {
+	err := conn.Exec(insertIssueTag, issueTag.Issueid, issueTag.Tagid)
+	if err != nil {
+		log.Fatal(err)
+	}
+	issueTag.ID = int(conn.LastInsertRowID())
+	return issueTag
+}
+
+// CreateDocumentTag creates an issue
+func CreateDocumentTag(conn *sqlite3.Conn, documentTag *DocumentTag) *DocumentTag {
+	err := conn.Exec(insertDocumentTag, documentTag.Documentid, documentTag.Tagid)
+	if err != nil {
+		log.Fatal(err)
+	}
+	documentTag.ID = int(conn.LastInsertRowID())
+	return documentTag
+}
 
 // CreateTables creates the tables if they don't exist
 func CreateTables(conn *sqlite3.Conn) error {
@@ -52,6 +88,18 @@ func CreateTables(conn *sqlite3.Conn) error {
 		return err
 	}
 	err = conn.Exec(createIssueTable)
+	if err != nil {
+		return err
+	}
+	err = conn.Exec(createTagTable)
+	if err != nil {
+		return err
+	}
+	err = conn.Exec(createIssueTagTable)
+	if err != nil {
+		return err
+	}
+	err = conn.Exec(createDocumentTagTable)
 	return err
 }
 
