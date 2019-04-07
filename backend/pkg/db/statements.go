@@ -44,9 +44,36 @@ const (
 									inner join issuetag on issue.id = issuetag.issueid
 									inner join tag on issuetag.tagid = tag.id
 									where tag.name = ?`
+	selectFileWithId string = `select * from file where file.id = ?`
 	// delete statements
 	deleteIssue string = `delete from issue where issue.id = ?;`
 )
+
+// GetSpecFile returns the file related to the id
+func GetSpecFile(conn *sqlite3.Conn, id string) *File {
+	file := &File{}
+	stmt, err := conn.Prepare(selectFileWithId, id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+
+	for {
+		_, err := stmt.Step()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		err = stmt.Scan(&file.ID, &file.Location)
+		log.Print(file.Location)
+		file.Documentid = 0
+		if err != nil {
+			log.Fatal(err)
+		}
+		break
+	}
+	return file
+}
 
 // CreateTag creates an issue
 func CreateTag(conn *sqlite3.Conn, tag *Tag) *Tag {
@@ -337,11 +364,11 @@ func InsertTestData(conn *sqlite3.Conn) {
 	issuetag := &IssueTag{}
 	doctag := &DocumentTag{}
 	doctag2 := &DocumentTag{}
-	file := &File{Location: "testlocation of the file"}
-	doc := &Document{Name: "testdocument", Text: "content of the document", Location: "testlocation of the document"}
-	doc2 := &Document{Name: "testdocument2", Text: "content of the document2", Location: "testlocation of the document2"}
-	note := &Note{Content: "testlocation of the note"}
-	issue := &Issue{Name: "name of the issue", Description: "description of test issue"}
+	file := &File{Location: "136.png"}
+	doc := &Document{Name: "document one", Text: "content of the document", Location: "location of the first document"}
+	doc2 := &Document{Name: "document silvester", Text: "content of the document2", Location: "location of the second document"}
+	note := &Note{Content: "content of the note"}
+	issue := &Issue{Name: "name of the issue", Description: "description of the issue"}
 	err := conn.Exec(insertUser, user.Name, user.Password)
 	user.ID = int(conn.LastInsertRowID())
 	err = conn.Exec(insertDocument, doc.Name, doc.Text, doc.Location)

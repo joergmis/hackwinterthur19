@@ -3,7 +3,7 @@ export class Issue {
     private Name: string;
     private Description: string;
     private Userid: number;
-    private Fileid?: number;
+    public Fileid?: number;
     private Documentid?: number;
     
     constructor(
@@ -21,11 +21,15 @@ export class Issue {
             this.Documentid = Documentid;
         }
     
-    setIssueID(ID: number) {
+    public setIssueID(ID: number) {
         this.ID = ID;
     }
     
     public getId(): number {
         return this.ID;
-    };     
+    };
+    
+    public getFileId(): number {
+        return this.Fileid || 0;
+    }
 }

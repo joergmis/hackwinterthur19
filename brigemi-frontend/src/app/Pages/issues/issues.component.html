@@ -28,7 +28,6 @@
 <mat-nav-list>
   <mat-list-item (click)="redirectFunction('/showIssue', issue.ID)" *ngFor="let issue of issues | async">
     {{issue.Name}}
-    <input type="button" (click)="redirectFunction(issue.Location)" value="File"/>
   </mat-list-item>
 </mat-nav-list>
 

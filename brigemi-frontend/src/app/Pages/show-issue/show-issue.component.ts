@@ -11,14 +11,14 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./show-issue.component.css']
 })
 export class ShowIssueComponent implements OnInit {
-  public issue : Issue;
+  public issue: Issue;
 
   private restService;
 
-  constructor(private http: HttpClient, private router : Router, private ar : ActivatedRoute) {
+  constructor(private http: HttpClient, private router: Router, private ar: ActivatedRoute) {
     var main = this;
 
-    this.issue = new Issue(0,'','',0,0,0);
+    this.issue = new Issue(0, '', '', 0, 0, 0);
     this.restService = new RestService(this.http);
 
     ar.queryParams.subscribe(params => {
@@ -35,11 +35,23 @@ export class ShowIssueComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
-  redirectFunction(url : string, id : number) : void {
-    this.router.navigate([url],{ queryParams: { id: id } });
+  redirectFunction(url: string, id: number): void {
+    this.router.navigate([url], { queryParams: { id: id } });
+  }
+
+  redirect(url: string): void {
+    var main = this;
+    this.restService.get(this.issue.Fileid, "files/").subscribe(
+      data => {
+        console.log(data.Location);
+        // main.router.navigate(["/fileserver/" + data.Location]);
+        window.location.href = 'http://localhost:8090/tmp/' + data.Location;
+      },
+      err => { console.log(err); }
+    );
   }
 
 }

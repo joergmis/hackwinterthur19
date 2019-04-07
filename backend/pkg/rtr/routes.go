@@ -163,6 +163,12 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 		c.JSON(200, structs.Map(file))
 	})
 
+	// get a specific file
+	router.GET("/files/:id", func(c *gin.Context) {
+		file := db.GetSpecFile(conn, c.Param("id"))
+		c.JSON(200, structs.Map(file))
+	})
+
 	// create a note
 	router.POST("/notes", func(c *gin.Context) {
 		note := &db.Note{}
