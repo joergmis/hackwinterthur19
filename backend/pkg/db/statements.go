@@ -44,15 +44,25 @@ const (
 									inner join issuetag on issue.id = issuetag.issueid
 									inner join tag on issuetag.tagid = tag.id
 									where tag.name = ?`
-	selectFileWithId string = `select * from file where file.id = ?`
+	selectFileWithID string = `select * from file where file.id = ?`
 	// delete statements
 	deleteIssue string = `delete from issue where issue.id = ?;`
+	// update statements
+	updateIssue string = `update issue set fileid = ? where id = ?`
 )
+
+// UpdateIssue updates an issue
+func UpdateIssue(conn *sqlite3.Conn, issue *Issue) {
+	err := conn.Exec(updateIssue, issue.Fileid, issue.ID)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 
 // GetSpecFile returns the file related to the id
 func GetSpecFile(conn *sqlite3.Conn, id string) *File {
 	file := &File{}
-	stmt, err := conn.Prepare(selectFileWithId, id)
+	stmt, err := conn.Prepare(selectFileWithID, id)
 	if err != nil {
 		log.Fatal(err)
 	}

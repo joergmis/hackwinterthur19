@@ -145,6 +145,17 @@ func InitRouter(users map[string]string, conn *sqlite3.Conn) *gin.Engine {
 		if err != nil {
 			log.Fatal(err)
 		}
+		f := &db.File{Location: filename}
+		f = db.InsertFile(conn, f)
+		c.JSON(200, structs.Map(f))
+	})
+
+	// update an issue
+	router.PUT("/issues", func(c *gin.Context) {
+		issue := &db.Issue{}
+		c.Bind(&issue)
+		db.UpdateIssue(conn, issue)
+		c.JSON(200, structs.Map(issue))
 	})
 
 	// create a document

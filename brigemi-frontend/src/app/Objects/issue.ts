@@ -1,5 +1,5 @@
 export class Issue {
-    private ID: number;
+    public ID: number;
     private Name: string;
     private Description: string;
     private Userid: number;

@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { Issue } from "src/app/Objects/issue";
+import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
 
 @Component({
   selector: 'app-create-issue',
@@ -67,10 +68,11 @@ export class CreateIssueComponent implements OnInit {
   }
 
   createIssue() {
-    this.uploadImage();
+    var main = this;
     this.restService.post(this.model, "issues").subscribe(
       data => {
-        console.log("POST done");
+        main.model = data;
+        main.uploadImage()
       },
       err => console.error("Erroro: " + err)
     );
@@ -88,7 +90,14 @@ export class CreateIssueComponent implements OnInit {
       main.httpClient.post("http://localhost:8090/fileupload", formData, headers).subscribe(
         data => {
           console.log(data);
-          main.router.navigate(["/issues"]);
+          main.model.Fileid = data.ID;
+          main.restService.put(main.model, "issues").subscribe(
+            data => {
+              console.log(data);
+              main.router.navigate(["/issues"]);
+            },
+            err => console.error("Erroro: " + err)
+          );
         },
         err => console.error(err)
       );

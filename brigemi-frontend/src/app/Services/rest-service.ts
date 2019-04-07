@@ -23,4 +23,8 @@ export class RestService{
   getAll(url: string): Observable<any> {
     return this.http.get<any>(this.endpoint + url, this.httpOptions);
   }
+
+  put(model : any, url : string) : Observable<any> {
+    return this.http.put<any>(this.endpoint + url, model, this.httpOptions);
+  }
 }
