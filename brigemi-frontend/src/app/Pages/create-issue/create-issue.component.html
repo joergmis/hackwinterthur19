@@ -19,8 +19,8 @@
     <video #video id="video" width="100%" [hidden]="!isCameraShown || isPhotoTaken" autoplay></video> 
   </div>
   <div class="form-group" style="object-fit: fill">
-    <img #image />
     <canvas #canvas id="canvas" hidden></canvas>
+    <img #image />
   </div>
 
   <button mat-fab type="button" [hidden]="isCameraShown" (click)="isCameraShown = true">

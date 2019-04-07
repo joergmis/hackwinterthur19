@@ -64,8 +64,12 @@ export class CreateIssueComponent implements OnInit {
     let width = this.video.nativeElement.offsetWidth;
     let height = this.video.nativeElement.offsetHeight;
 
-    this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, width, height);
-    this.imageToUpload = this.canvas.nativeElement.toDataURL("image/png");
+    let canvasElement = this.canvas.nativeElement;
+    canvasElement.width = width;
+    canvasElement.height = height;
+    canvasElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, width, height);
+
+    this.imageToUpload = canvasElement.toDataURL("image/png");
 
     this.image.nativeElement.src = this.imageToUpload;
     this.image.nativeElement.width = width;
