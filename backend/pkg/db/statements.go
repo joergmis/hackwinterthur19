@@ -369,16 +369,16 @@ func GetAllIssues(conn *sqlite3.Conn) []Issue {
 // InsertTestData inserts some test data
 func InsertTestData(conn *sqlite3.Conn) {
 	user := &User{Name: "test", Password: "test"}
-	tag := &Tag{Name: "one"}
-	tag2 := &Tag{Name: "silvester"}
+	tag := &Tag{Name: "repair"}
+	tag2 := &Tag{Name: "sulzer-challenge"}
 	issuetag := &IssueTag{}
 	doctag := &DocumentTag{}
 	doctag2 := &DocumentTag{}
-	file := &File{Location: "136.png"}
-	doc := &Document{Name: "document one", Text: "content of the document", Location: "location of the first document"}
-	doc2 := &Document{Name: "document silvester", Text: "content of the document2", Location: "location of the second document"}
+	file := &File{Location: "816.png"}
+	doc := &Document{Name: "How to repair pumps", Text: "Call Sulzer", Location: "Path to an image"}
+	doc2 := &Document{Name: "How to win at Hackathons", Text: "Choose the best challenge ;)", Location: "Path to an image"}
 	note := &Note{Content: "content of the note"}
-	issue := &Issue{Name: "name of the issue", Description: "description of the issue"}
+	issue := &Issue{Name: "Pump is leaking", Description: "See the attachment for more details!"}
 	err := conn.Exec(insertUser, user.Name, user.Password)
 	user.ID = int(conn.LastInsertRowID())
 	err = conn.Exec(insertDocument, doc.Name, doc.Text, doc.Location)
