@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { Issue } from "src/app/Objects/issue";
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-create-issue',
@@ -69,11 +70,26 @@ export class CreateIssueComponent implements OnInit {
   createIssue() {
     this.uploadImage();
     this.restService.post(this.model, "issues").subscribe(
-      data => {
-        console.log("POST done");
-      },
-      err => console.error("Erroro: " + err)
+      data => { console.log("POST done"); },
+      err => {
+        console.log("error occurred");
+        let modelAsString = JSON.stringify(this.model);
+        localStorage.setItem("issue_" + hashCode(modelAsString), modelAsString);
+      }
     );
+    
+    for (let i =  0; i < localStorage.length; i++) {
+      let itemName = localStorage.key(i);
+      if (itemName.startsWith("issue")) {
+        this.restService.post(JSON.parse(localStorage.getItem(itemName)), "issues").subscribe(
+          data => { 
+            console.log("POST done");
+            localStorage.removeItem(itemName);
+            console.log("\"" + itemName + "\" from localStorage removed");
+          }
+        );
+      }
+    }
   }
 
   uploadImage() {
@@ -94,4 +110,15 @@ export class CreateIssueComponent implements OnInit {
       );
     })
   }
+}
+
+function hashCode(data) {
+  var hash = 0, i, chr;
+  if (data.length === 0) return hash;
+  for (i = 0; i < data.length; i++) {
+    chr   = data.charCodeAt(i);
+    hash  = ((hash << 31) - hash) + chr;
+    hash |= 0;
+  }
+  return hash;
 }
