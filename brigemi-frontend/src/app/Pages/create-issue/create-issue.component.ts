@@ -6,8 +6,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { Issue } from "src/app/Objects/issue";
+import { Tag } from "src/app/Objects/tag";
 import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
 import { forEach } from '@angular/router/src/utils/collection';
+import { jsonpCallbackContext } from '@angular/common/http/src/module';
 
 @Component({
   selector: 'app-create-issue',
@@ -34,6 +36,8 @@ export class CreateIssueComponent implements OnInit {
 
   // An issue id of 0 indicates a new issue to be created
   model = new Issue(0, "", "", 1);
+  tags = '';
+  tag = [];
 
   private httpClient;
   private restService;
@@ -70,8 +74,28 @@ export class CreateIssueComponent implements OnInit {
 
   createIssue() {
     var main = this;
+    console.log(main.tags);
+    var allTags = main.tags.split(/[ ,]+/).filter(Boolean);
+    // create all the tags
+    for (var i = 0; i < allTags.length; i++) {
+      var payload = {name: allTags[i]}
+      this.restService.post(payload, "tags").subscribe(
+        data => {
+          var t = new Tag();
+          t.Id = data.ID;
+          t.Name = data.Name;
+          console.log("created tag "+ JSON.stringify(t));
+          this.tag.push(t);
+        },
+        err => {
+          console.log(err);
+        }
+      )
+    }
+    // create the issue itself
     this.restService.post(this.model, "issues").subscribe(
       data => {
+        // got the issue back with th id
         main.model = data;
         main.uploadImage()
       },
@@ -94,6 +118,7 @@ export class CreateIssueComponent implements OnInit {
         );
       }
     }
+
   }
 
   uploadImage() {
